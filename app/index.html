@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SALYQFLOW — кабинет ИП</title>
+<style>
+*{box-sizing:border-box}
+:root{--p:#087f8c;--pd:#066874;--pl:#e9f5f6;--blue:#1769aa;--green:#218739;--orange:#b76e00;--red:#c73535;--bg:#f3f5f7;--text:#202a34;--muted:#687684;--border:#dce2e7}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;font:14px Arial,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.screen,.page{display:none}.screen.active,.page.active{display:block}
+a{color:var(--p)}
+header{background:#fff;border-bottom:1px solid var(--border)}
+.public-inner,.app-header{height:66px;padding:0 24px;display:flex;align-items:center;justify-content:space-between}.public-inner{max-width:1200px;margin:auto}
+.brand,.app-brand,.header-right{display:flex;align-items:center;gap:10px}
+.mark{width:34px;height:34px;background:var(--p);color:#fff;display:grid;place-items:center;border-radius:3px;font-weight:800}
+.brand-name{font-size:20px;font-weight:800}.brand-name span{color:var(--p)}
+.btn{border:1px solid var(--border);background:#fff;padding:10px 16px;border-radius:3px;font-weight:700;color:var(--text)}
+.btnp{background:var(--p);border-color:var(--p);color:#fff}.btnp:hover{background:var(--pd)}
+.btn:disabled{opacity:.55;cursor:default}
+/* landing */
+.landing{min-height:100vh;background:#f6f8f9}
+.hero{max-width:1200px;margin:auto;padding:80px 24px;display:grid;grid-template-columns:1.05fr .95fr;gap:65px;align-items:center}
+.badge{display:inline-block;background:var(--pl);color:var(--pd);border:1px solid #cde7ea;padding:7px 10px;font-weight:700}
+.hero h1{font-size:46px;line-height:1.1;margin:18px 0;color:#24343f}.hero p{font-size:18px;line-height:1.65;color:#596976}
+.hero-actions{display:flex;gap:10px;margin-top:26px}
+.demo,.card,.box{background:#fff;border:1px solid var(--border)}
+.demo-head,.box-head{padding:13px 17px;background:#f5f7f8;border-bottom:1px solid var(--border);font-weight:700}
+.demo-body,.box-body{padding:20px}
+.demo-row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid #edf0f2}
+.demo-row:last-child{border-bottom:0}
+.tax-result{margin-top:16px;padding:15px;background:var(--pl);border-left:4px solid var(--p)}.tax-result strong{display:block;font-size:25px;color:var(--pd);margin-top:5px}
+/* auth */
+.auth{min-height:100vh;display:grid;place-items:center;padding:20px}
+.auth-box{width:100%;max-width:460px;background:#fff;border:1px solid var(--border);padding:28px}
+.field{margin:14px 0}.field label{display:block;font-weight:700;font-size:13px;margin-bottom:6px}
+.field input,.field select{width:100%;padding:11px;border:1px solid #c9d1d8;border-radius:3px;background:#fff;color:var(--text)}
+.primary{width:100%;padding:12px;border:0;background:var(--p);color:#fff;font-weight:700}
+.link{text-align:center;color:var(--p);margin-top:16px;cursor:pointer}
+/* app shell */
+.app-header{position:sticky;top:0;z-index:30}
+.profile{border:1px solid var(--border);background:#fff;padding:9px 12px;display:flex;gap:8px;align-items:center;font-weight:700}
+.layout{display:grid;grid-template-columns:230px minmax(0,1fr);max-width:1400px;margin:auto}
+.sidebar{background:#fff;border-right:1px solid var(--border);min-height:calc(100vh - 66px);padding:16px 11px}
+.nav{width:100%;border:0;background:transparent;padding:12px;text-align:left;display:block;color:#4a5965;font-weight:700;margin-bottom:3px}
+.nav:hover{background:#f3f6f7}.nav.active{background:var(--pl);color:var(--pd);border-left:3px solid var(--p)}
+.content{padding:28px 32px 50px;width:100%;max-width:1160px}
+.crumb{font-size:12px;color:#7a8792;margin-bottom:10px}.title{font-size:26px;margin:0 0 5px}.subtitle{color:var(--muted);margin-bottom:22px}
+.section{font-size:18px;margin:27px 0 12px}
+.small{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.45}
+.good{color:var(--green);font-weight:700}.risk-high{color:var(--red);font-weight:800}.risk-mid{color:var(--orange);font-weight:800}
+.warn-t{color:#925016}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin:14px 0}
+.card{padding:17px;min-width:0}.label{font-size:12px;color:var(--muted);margin-bottom:8px}.value{font-size:22px;font-weight:800;overflow-wrap:anywhere}
+.green{color:var(--green)}.orange{color:var(--orange)}.blue{color:var(--blue)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.box{min-width:0}
+.period-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}.period-row label{font-weight:700}
+.period-row select,.toolbar select,.toolbar input{padding:9px 10px;border:1px solid #c9d1d8;border-radius:3px;background:#fff;color:var(--text)}
+.notice{background:#f0f8f8;border:1px solid #c8e3e5;border-left:4px solid var(--p);padding:14px 16px;margin-bottom:12px;display:flex;justify-content:space-between;gap:14px;align-items:center}
+.notice.warn{background:#fff7f2;border-color:#efd1bd;border-left-color:var(--orange)}
+.empty{background:#fff;border:1px dashed #b9c4cc;padding:40px 22px;text-align:center}.empty-ico{font-size:34px}.empty h2{margin:10px 0 6px}.empty p{max-width:520px;margin:0 auto 18px;color:var(--muted);line-height:1.55}
+.calendar-item{padding:14px 0;border-bottom:1px solid #edf0f2;display:grid;grid-template-columns:62px 1fr auto;gap:12px;align-items:center}.calendar-item:last-child{border-bottom:0}
+.datebox{background:#f5f7f8;border:1px solid var(--border);text-align:center;padding:7px 4px;font-size:12px;text-transform:uppercase}.datebox strong{display:block;font-size:19px}
+.tag{font-size:12px;padding:5px 8px;background:#fff5df;color:#8a5a00;border:1px solid #efd69d;white-space:nowrap}
+.tablebox{background:#fff;border:1px solid var(--border);width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.table{width:100%;border-collapse:collapse;min-width:760px}
+.table th{background:#f4f6f7;text-align:left;font-size:12px;color:#596873;padding:11px 13px;border-bottom:1px solid var(--border);white-space:nowrap}
+.table td{padding:12px 13px;border-bottom:1px solid #e9edf0;vertical-align:top}.table tr:last-child td{border-bottom:0}
+.table .btn{padding:7px 11px;white-space:nowrap}
+input.rate{width:74px;padding:7px;border:1px solid #c9d1d8;border-radius:3px}
+.drop{display:block;border:2px dashed #9fb4bb;background:#fff;padding:26px 18px;text-align:center;cursor:pointer;margin-bottom:12px}
+.drop.over,.drop:hover{border-color:var(--p);background:var(--pl)}
+.drop input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.uploads div{padding:6px 0}.up-ok{color:var(--green)}.up-warn{color:var(--orange)}.up-err{color:var(--red)}.up-work{color:var(--muted)}
+.uploads{margin-bottom:8px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}.toolbar input{flex:1;min-width:180px}
+.seg{display:flex}.seg button{border:1px solid var(--border);background:#fff;padding:9px 12px;margin-left:-1px;font-weight:700;color:var(--muted)}.seg button.on{background:var(--pl);color:var(--pd);border-color:var(--p);position:relative}
+.pill{display:inline-block;padding:4px 8px;font-size:12px;font-weight:700;border:1px solid var(--border);background:#f1f3f4;color:#5e6972}
+.c-income{background:#eaf6ed;border-color:#c5e3cc;color:#176c2b}.c-loan{background:#e8f1fa;border-color:#c3d9ee;color:#1769aa}.c-cash{background:#fff5df;border-color:#efd69d;color:#8a5a00}
+.auditline{font-family:ui-monospace,Menlo,monospace;font-size:12px;padding:8px 0;border-bottom:1px solid #edf0f2;overflow-wrap:anywhere}.auditline:last-child{border-bottom:0}
+/* modal */
+.modalbg{display:none;position:fixed;inset:0;background:#14202a80;z-index:1000;align-items:center;justify-content:center;padding:12px;overflow-y:auto}
+.modal{width:100%;max-width:520px;max-height:94vh;overflow-y:auto;background:#fff;border:1px solid #cad2d8}
+.modalhead{padding:15px 19px;background:#f4f6f7;border-bottom:1px solid var(--border);font-size:18px;font-weight:800}
+.modalbody{padding:19px}.modalfoot{padding:14px 19px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;padding:50px 18px;gap:30px}.hero h1{font-size:34px}
+  .public-inner,.app-header{padding:0 14px}
+  .layout{display:block}
+  .sidebar{position:sticky;top:66px;z-index:25;display:flex;gap:6px;width:100%;min-height:0;padding:8px;overflow-x:auto;overflow-y:hidden;white-space:nowrap;border-right:0;border-bottom:1px solid var(--border);scrollbar-width:none}
+  .sidebar::-webkit-scrollbar{display:none}
+  .nav{flex:0 0 auto;width:auto;padding:9px 12px;margin:0;border:1px solid var(--border);border-radius:8px;background:#fff;font-size:13px}
+  .nav.active{border-left:1px solid var(--p);border-color:var(--p)}
+  .content{padding:18px 12px 35px;max-width:100%}
+  .grid4{grid-template-columns:repeat(2,minmax(0,1fr))}.two{grid-template-columns:1fr}
+  .field input,.field select,input,select{font-size:16px}
+  .btn{min-height:42px;touch-action:manipulation}
+}
+@media(max-width:600px){
+  .hero h1{font-size:29px}.hero p{font-size:16px}.hero-actions{display:grid;grid-template-columns:1fr;gap:8px}
+  .grid4{grid-template-columns:1fr}
+  .title{font-size:23px}
+  .notice{flex-direction:column;align-items:flex-start}.notice .btn{width:100%}
+  .toolbar{display:grid;grid-template-columns:1fr}.seg{width:100%}.seg button{flex:1}
+  .calendar-item{grid-template-columns:54px 1fr}.calendar-item .tag{grid-column:2;justify-self:start}
+  .modalfoot .btn{flex:1}
+  #hdrName{max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+}
+
+.copybox{width:100%;margin-bottom:12px;padding:10px;border:1px solid #c9d1d8;font:12px ui-monospace,Menlo,monospace;background:#fff;color:var(--text)}
+/* v17: accounts, payment, reminders, hints */
+.auth{padding-top:max(20px,env(safe-area-inset-top,0px))}
+.auth-box.wide{max-width:520px}
+.auth-box .primary{margin-top:6px;min-height:46px;border-radius:3px}.auth-box .primary:disabled{opacity:.6}
+.auth-box h2{margin:14px 0 6px}
+#regErr,#lgErr,#rsErr{min-height:18px;margin:8px 0;font-size:13px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.pay-v{text-align:right;overflow-wrap:anywhere}
+.cal-actions{grid-column:2/-1;display:flex;gap:6px;flex-wrap:wrap}
+.cal-actions .btn{padding:6px 10px;font-size:12px;min-height:34px;text-decoration:none;display:inline-flex;align-items:center}
+.hint{background:#f0f8f8;border-left:3px solid var(--p);padding:10px 12px;margin-top:10px;font-size:13px;line-height:1.5}
+.gloss{margin-top:14px;background:#fff;border:1px solid var(--border)}.gloss summary{padding:13px 17px;font-weight:700;cursor:pointer}.gloss-body{padding:4px 17px 10px}
+#toast{display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:max(20px,env(safe-area-inset-bottom,0px));max-width:min(92vw,520px);background:#202a34;color:#fff;padding:12px 16px;border-radius:6px;z-index:3000;font-size:14px;line-height:1.4;box-shadow:0 4px 18px #0004}
+@media(max-width:480px){.app-brand strong{display:none}.header-right{gap:6px}#hdrName{max-width:110px}}
+</style>
+</head>
+<body>
+
+<section id="landing" class="screen active landing">
+<header><div class="public-inner"><div class="brand"><div class="mark">S</div><div class="brand-name">SALYQ<span>FLOW</span></div></div><div><button class="btn" onclick="screen_('login')">Войти</button> <button class="btn btnp" onclick="screen_('register')">Регистрация</button></div></div></header>
+<div class="hero"><div><span class="badge">Налог ИП по банковским выпискам</span><h1>Загрузите выписку — получите налог</h1><p>SALYQFLOW читает PDF-выписки Kaspi, Halyk и ЦентрКредит, отделяет доход от кредитов и своих денег, считает налог на упрощёнке и напоминает о сроках и социальных платежах.</p><div class="hero-actions"><button class="btn btnp" onclick="screen_('register')">Создать кабинет</button><button class="btn" onclick="screen_('login')">Войти</button></div></div>
+<div class="demo"><div class="demo-head">Пример разбора поступления</div><div class="demo-body"><div class="demo-row"><span>Поступление</span><strong>500 000 ₸</strong></div><div class="demo-row"><span>Назначение</span><strong>Оплата по счёту, акт</strong></div><div class="demo-row"><span>Как учтено</span><strong>Доход</strong></div><div class="tax-result">Налог по ставке 3%<strong>15 000 ₸</strong></div></div></div></div>
+</section>
+
+<section id="register" class="screen"><div class="auth"><div class="auth-box wide"><div class="brand-name">SALYQ<span>FLOW</span></div><h2>Регистрация предпринимателя</h2><div class="small">Демо-версия: данные и пароль хранятся только на этом устройстве, на сервер ничего не отправляется.</div>
+<div class="field"><label for="regName">Наименование ИП</label><input id="regName" autocomplete="organization" placeholder="ИП Иванов Иван"></div>
+<div class="field"><label for="regIin">ИИН</label><input id="regIin" inputmode="numeric" autocomplete="off" placeholder="12 цифр"><div id="regIinMsg" class="small"></div></div>
+<div class="field"><label for="regBirth">Дата рождения (берётся из ИИН)</label><input id="regBirth" readonly placeholder="заполнится по ИИН"></div>
+<div class="field"><label for="regPhone">Телефон (+7, затем код оператора и номер)</label><input id="regPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (777) 123-45-67"></div>
+<div class="field"><label for="regRegion">Область или город</label><select id="regRegion"></select></div>
+<div class="field"><label for="regDistrict">Район</label><input id="regDistrict" placeholder="Например: Жанааркинский район"></div>
+<div class="field"><label for="regRate">Ставка налога, %</label><input id="regRate" type="number" step="0.1" min="0" max="20" value="3"><div class="small">Ставку для вашего района подтвердите по решению маслихата.</div></div>
+<div class="field"><label for="regPw">Пароль</label><input id="regPw" type="password" autocomplete="new-password"><div id="regPwHint" class="small">Нужно: 8 символов, заглавная и строчная буква, цифра, спецсимвол</div></div>
+<div class="field"><label for="regPw2">Повторите пароль</label><input id="regPw2" type="password" autocomplete="new-password"></div>
+<div class="small" style="margin-top:6px">Создавая кабинет, вы соглашаетесь с <a href="../terms.html" target="_blank" rel="noopener">условиями использования</a> и <a href="../privacy.html" target="_blank" rel="noopener">политикой конфиденциальности</a>.</div><div id="regErr" class="risk-high" role="alert"></div>
+<button class="primary" id="regBtn" data-act="doRegister">Создать кабинет</button><div class="link" onclick="screen_('login')">Уже есть кабинет? Войти</div><div class="link" onclick="screen_('landing')">Вернуться</div></div></div></section>
+<section id="login" class="screen"><div class="auth"><div class="auth-box"><div class="brand-name">SALYQ<span>FLOW</span></div><h2>Вход</h2><div class="small">Кабинет открывается на том устройстве, где вы регистрировались.</div><div class="field"><label for="lgId">ИИН</label><input id="lgId" inputmode="numeric" autocomplete="username" placeholder="12 цифр"></div><div class="field"><label for="lgPw">Пароль</label><input id="lgPw" type="password" autocomplete="current-password"></div><div id="lgErr" class="risk-high" role="alert"></div><button class="primary" id="lgBtn" data-act="doLogin">Войти</button><div class="link" onclick="screen_('reset')">Забыли пароль?</div><div class="link" onclick="screen_('register')">Создать кабинет</div><div class="link" onclick="screen_('landing')">Вернуться</div></div></div></section>
+<section id="reset" class="screen"><div class="auth"><div class="auth-box"><div class="brand-name">SALYQ<span>FLOW</span></div><h2>Новый пароль</h2><div class="small">Введите ИИН и телефон, указанные при регистрации. Загруженные выписки сохранятся. Это демо без сервера, поэтому SMS не отправляется.</div><div class="field"><label for="rsIin">ИИН</label><input id="rsIin" inputmode="numeric" placeholder="12 цифр"></div><div class="field"><label for="rsPhone">Телефон</label><input id="rsPhone" type="tel" inputmode="tel" placeholder="+7 (777) 123-45-67"></div><div class="field"><label for="rsPw">Новый пароль</label><input id="rsPw" type="password" autocomplete="new-password"><div id="rsPwHint" class="small">Нужно: 8 символов, заглавная и строчная буква, цифра, спецсимвол</div></div><div class="field"><label for="rsPw2">Повторите пароль</label><input id="rsPw2" type="password" autocomplete="new-password"></div><div id="rsErr" class="risk-high" role="alert"></div><button class="primary" data-act="doReset">Сменить пароль</button><div class="link" onclick="screen_('login')">Назад ко входу</div></div></div></section>
+
+<section id="app" class="screen">
+<header class="app-header"><div class="app-brand"><div class="mark">S</div><strong>SALYQFLOW</strong></div><div class="header-right"><button class="profile" onclick="showPage('profile')"><span id="hdrName">ИП</span></button><button class="btn" data-act="logout">Выйти</button></div></header>
+<div class="layout"><nav class="sidebar">
+<button class="nav active" data-page="dashboard">Личный кабинет</button>
+<button class="nav" data-page="taxes">Налоги и поступления</button>
+<button class="nav" data-page="calendar">Налоговый календарь</button>
+<button class="nav" data-page="social">Социальные платежи</button>
+<button class="nav" data-page="profile">Данные предпринимателя</button>
+</nav><main class="content">
+<div id="dashboard" class="page active"></div>
+<div id="taxes" class="page"></div>
+<div id="calendar" class="page"></div>
+<div id="social" class="page"></div>
+<div id="profile" class="page"></div>
+</main></div>
+</section>
+
+<div id="opModal" class="modalbg"><div class="modal"><div class="modalhead">Как учесть поступление</div><div class="modalbody" id="opBody"></div><div class="modalfoot"><button class="btn" id="opCancel">Отмена</button><button class="btn" id="opReset">К автоопределению</button><button class="btn btnp" id="opSave">Сохранить</button></div></div></div>
+
+<div id="infoModal" class="modalbg"><div class="modal"><div class="modalhead" id="infoHead"></div><div class="modalbody" id="infoBody"></div><div class="modalfoot"><button class="btn btnp" data-act="closeInfo">Закрыть</button></div></div></div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* SALYQFLOW: IIN checks (Kazakhstan) and a small SHA-256 used only as a fallback when WebCrypto is missing. */
+(function (root) {
+  'use strict';
+  function digits(s) { return String(s == null ? '' : s).replace(/\D/g, ''); }
+
+  // Control digit: weights 1..11; if the remainder is 10, weights 3..11,1,2; if it is 10 again the number is not issued.
+  function control(d) {
+    var w1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], w2 = [3, 4, 5, 6, 7, 8, 9, 10, 11, 1, 2], i, s = 0;
+    for (i = 0; i < 11; i++) s += +d[i] * w1[i];
+    var k = s % 11;
+    if (k === 10) { s = 0; for (i = 0; i < 11; i++) s += +d[i] * w2[i]; k = s % 11; }
+    return k === 10 ? -1 : k;
+  }
+
+  function parse(iin, now) {
+    var d = digits(iin);
+    if (d.length !== 12) return { ok: false, error: 'ИИН состоит из 12 цифр' };
+    var yy = +d.slice(0, 2), mm = +d.slice(2, 4), dd = +d.slice(4, 6), g = +d[6];
+    var century = { 1: 1800, 2: 1800, 3: 1900, 4: 1900, 5: 2000, 6: 2000 }[g];
+    if (!century) return { ok: false, error: 'Седьмая цифра ИИН должна быть от 1 до 6: проверьте номер' };
+    var year = century + yy, t = new Date(Date.UTC(year, mm - 1, dd));
+    if (t.getUTCFullYear() !== year || t.getUTCMonth() !== mm - 1 || t.getUTCDate() !== dd) return { ok: false, error: 'В ИИН неверная дата рождения: проверьте первые шесть цифр' };
+    var today = now || new Date();
+    if (t.getTime() > today.getTime()) return { ok: false, error: 'В ИИН дата рождения в будущем: проверьте номер' };
+    if (control(d) !== +d[11]) return { ok: false, error: 'Контрольная цифра не сходится: проверьте, нет ли опечатки' };
+    var iso = year + '-' + (mm < 10 ? '0' : '') + mm + '-' + (dd < 10 ? '0' : '') + dd;
+    return { ok: true, birth: iso };
+  }
+
+  var K = [0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5, 0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
+    0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da, 0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
+    0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85, 0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
+    0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3, 0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2];
+  function ror(x, n) { return (x >>> n) | (x << (32 - n)); }
+  function sha256(msg) {
+    var l = msg.length, total = Math.ceil((l + 9) / 64) * 64, buf = new Uint8Array(total);
+    buf.set(msg); buf[l] = 0x80;
+    var dv = new DataView(buf.buffer), bits = l * 8;
+    dv.setUint32(total - 8, Math.floor(bits / 4294967296)); dv.setUint32(total - 4, bits >>> 0);
+    var H = [0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19], w = new Uint32Array(64), off, i;
+    for (off = 0; off < total; off += 64) {
+      for (i = 0; i < 16; i++) w[i] = dv.getUint32(off + i * 4);
+      for (i = 16; i < 64; i++) {
+        var s0 = ror(w[i - 15], 7) ^ ror(w[i - 15], 18) ^ (w[i - 15] >>> 3), s1 = ror(w[i - 2], 17) ^ ror(w[i - 2], 19) ^ (w[i - 2] >>> 10);
+        w[i] = (w[i - 16] + s0 + w[i - 7] + s1) >>> 0;
+      }
+      var a = H[0], b = H[1], c = H[2], d = H[3], e = H[4], f = H[5], g = H[6], h = H[7];
+      for (i = 0; i < 64; i++) {
+        var S1 = ror(e, 6) ^ ror(e, 11) ^ ror(e, 25), ch = (e & f) ^ (~e & g), t1 = (h + S1 + ch + K[i] + w[i]) >>> 0;
+        var S0 = ror(a, 2) ^ ror(a, 13) ^ ror(a, 22), maj = (a & b) ^ (a & c) ^ (b & c), t2 = (S0 + maj) >>> 0;
+        h = g; g = f; f = e; e = (d + t1) >>> 0; d = c; c = b; b = a; a = (t1 + t2) >>> 0;
+      }
+      H[0] = (H[0] + a) >>> 0; H[1] = (H[1] + b) >>> 0; H[2] = (H[2] + c) >>> 0; H[3] = (H[3] + d) >>> 0;
+      H[4] = (H[4] + e) >>> 0; H[5] = (H[5] + f) >>> 0; H[6] = (H[6] + g) >>> 0; H[7] = (H[7] + h) >>> 0;
+    }
+    var out = new Uint8Array(32), odv = new DataView(out.buffer);
+    for (i = 0; i < 8; i++) odv.setUint32(i * 4, H[i]);
+    return out;
+  }
+
+  var api = { digits: digits, parse: parse, control: control, sha256: sha256 };
+  if (typeof module !== 'undefined' && module.exports) module.exports = api;
+  root.SFId = api;
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script>
+/* SALYQFLOW statement parser: PDF text items (display coordinates) -> operations.
+   Works in the browser and in Node. Input pages: [[{s,x,y,w}, ...], ...] */
+(function (root) {
+  'use strict';
+  var DATE = /^\d\d\.\d\d\.\d{4}$/;
+
+  // Column start edges in display coordinates (taken from the banks' table grids).
+  var BANKS = {
+    kaspi: { label: 'Kaspi Bank', edges: [40, 91, 152.2, 234, 315.5, 451.5, 553.5, 614.8, 642],
+      I: { doc: 0, date: 1, debit: 2, credit: 3, cp: 4, iik: 5, bik: 6, knp: 7, purpose: 8 }, dec: 'comma' },
+    halyk: { label: 'Halyk Bank', edges: [20, 80, 151, 226, 301, 405, 525],
+      I: { date: 0, doc: 1, debit: 2, credit: 3, cp: 4, purpose: 5, vat: 6 }, dec: 'dot' },
+    bcc: { label: 'Банк ЦентрКредит', edges: [28, 71.5, 114.5, 157.6, 206.1, 249.2, 297.7, 340.8, 383.9, 427, 464.7, 507.7],
+      I: { doc: 0, date: 1, bik: 2, iik: 3, snd: 4, cp: 5, rcv: 6, debit: 7, credit: 8, knp: 9, bank: 10, purpose: 11 }, dec: 'comma' }
+  };
+
+  function lines(items) {
+    var arr = items.slice().sort(function (a, b) { return a.y - b.y || a.x - b.x; });
+    var out = [], cur = null;
+    arr.forEach(function (it) {
+      if (!cur || Math.abs(it.y - cur.y) > 2) { cur = { y: it.y, items: [] }; out.push(cur); }
+      cur.items.push(it);
+    });
+    out.forEach(function (l) {
+      l.items.sort(function (a, b) { return a.x - b.x; });
+      l.text = l.items.map(function (i) { return i.s; }).join(' ');
+    });
+    return out;
+  }
+
+  function detectBank(pages) {
+    var head = lines(pages[0] || []).filter(function (l) { return l.y < 330; }).map(function (l) { return l.text; }).join('\n');
+    if (/ЦентрКредит/i.test(head)) return 'bcc';
+    if (/Народный Банк|HSBKKZKX/i.test(head)) return 'halyk';
+    if (/Лицевой счет/i.test(head) && /Входящий остаток/i.test(head)) return 'kaspi';
+    return null;
+  }
+
+  function detectOwnId(pages) {
+    var ls = lines(pages[0] || []);
+    for (var i = 0; i < ls.length && i < 40; i++) {
+      var m = ls[i].text.match(/(?:ИИН\s*\/?\s*БИН|ИИН|БИН)\s*:?\s*(\d{12})/);
+      if (m) return m[1];
+    }
+    return '';
+  }
+
+  function parseAmt(s, dec) {
+    s = String(s || '').replace(/[\s ]/g, '');
+    if (!s) return 0;
+    s = dec === 'dot' ? s.replace(/,/g, '') : s.replace(/,/g, '.');
+    if (!/^-?\d+(\.\d+)?$/.test(s)) return NaN;
+    return parseFloat(s);
+  }
+
+  function colOf(def, it) {
+    var e = def.edges, I = def.I, x = it.x;
+    var lo = e[I.debit] - 0.5, hi = e[I.credit + 1] === undefined ? Infinity : e[I.credit + 1];
+    if (x >= lo && x < hi) x = it.x + (it.w || 0) / 2;       // amounts: use the centre
+    if (x < e[0] - 3) return -1;
+    var c = 0;
+    for (var i = 0; i < e.length; i++) { if (x >= e[i] - 0.5) c = i; else break; }
+    return c;
+  }
+
+  function isoDate(s) { return s.slice(6, 10) + '-' + s.slice(3, 5) + '-' + s.slice(0, 2); }
+
+  function parseStatement(pages) {
+    var bank = detectBank(pages);
+    if (!bank) return { error: 'Не удалось определить банк. Поддерживаются выписки Kaspi, Halyk и ЦентрКредит в формате PDF.' };
+    var def = BANKS[bank], I = def.I, rows = [], totals = null, counts = null;
+
+    pages.forEach(function (items, pi) {
+      var its = items.map(function (it) { return { s: it.s, x: it.x, y: it.y, w: it.w, col: colOf(def, it) }; });
+      var cutoff = Infinity, footY = null;
+      its.forEach(function (it) {
+        var s = it.s.trim();
+        if (bank === 'kaspi' && /^Итого/.test(s) && it.x < 150 && !/^Итого операций/.test(s) && footY === null) { footY = it.y; cutoff = it.y - 2; }
+        if (bank === 'halyk' && s === 'За период:' && footY === null) { footY = it.y; cutoff = it.y - 12; }
+        if (bank === 'bcc' && /^Жиынтығы/.test(s) && footY === null) { footY = it.y; cutoff = it.y - 2; }
+      });
+      if (footY !== null) {
+        var num = function (arr) { return parseAmt(arr.map(function (t) { return t.s; }).join(' '), def.dec); };
+        var inLine = function (y0, y1) {
+          return its.filter(function (t) { return t.y >= y0 && t.y <= y1 && (t.col === I.debit || t.col === I.credit); })
+            .sort(function (a, b) { return a.y - b.y || a.x - b.x; });
+        };
+        var fromTo = bank === 'halyk' ? [footY + 4, footY + 14] : bank === 'bcc' ? [footY - 1, footY + 12] : [footY - 1, footY + 1];
+        var t = inLine(fromTo[0], fromTo[1]);
+        var d = t.filter(function (z) { return z.col === I.debit; }), c = t.filter(function (z) { return z.col === I.credit; });
+        if (d.length || c.length) totals = { debit: num(d), credit: num(c) };
+        if (bank === 'kaspi') {
+          var cn = its.filter(function (z) { return /^Итого операций/.test(z.s.trim()); })[0];
+          if (cn) {
+            var q = inLine(cn.y - 1, cn.y + 1);
+            counts = {
+              debit: parseInt(q.filter(function (z) { return z.col === I.debit; }).map(function (z) { return z.s; }).join('').replace(/\s/g, ''), 10),
+              credit: parseInt(q.filter(function (z) { return z.col === I.credit; }).map(function (z) { return z.s; }).join('').replace(/\s/g, ''), 10)
+            };
+          }
+        }
+      }
+      var body = its.filter(function (it) { return it.y < cutoff && it.col >= 0 && it.s.trim() !== ''; });
+      var anchors = body.filter(function (it) { return it.col === I.date && DATE.test(it.s.trim()); })
+        .sort(function (a, b) { return a.y - b.y; });
+      var local = anchors.map(function (a) { var r = { cells: {}, y: a.y, pi: pi }; rows.push(r); return r; });
+      var prev = rows.length > local.length ? rows[rows.length - local.length - 1] : null;
+      body.forEach(function (it) {
+        var k = -1;
+        for (var i = 0; i < anchors.length; i++) { if (anchors[i].y <= it.y + 1.5) k = i; else break; }
+        var row = k >= 0 ? local[k] : prev;
+        if (!row) return;
+        (row.cells[it.col] = row.cells[it.col] || []).push({ pi: pi, y: it.y, x: it.x, s: it.s });
+      });
+    });
+
+    var cell = function (r, c) {
+      var a = r.cells[c]; if (!a) return '';
+      return a.slice().sort(function (p, q) { return p.pi - q.pi || p.y - q.y || p.x - q.x; })
+        .map(function (z) { return z.s.trim(); }).join(' ').replace(/\s+/g, ' ').trim();
+    };
+    var ops = [], bad = 0;
+    rows.forEach(function (r) {
+      var dm = (cell(r, I.date).match(/\d\d\.\d\d\.\d{4}/) || [])[0];
+      var debit = parseAmt(cell(r, I.debit), def.dec), credit = parseAmt(cell(r, I.credit), def.dec);
+      if (!dm || isNaN(debit) || isNaN(credit) || (debit === 0 && credit === 0)) { bad++; return; }
+      ops.push({
+        bank: bank, doc: cell(r, I.doc), date: isoDate(dm), debit: debit, credit: credit,
+        cp: cell(r, I.cp), purpose: cell(r, I.purpose), knp: (cell(r, I.knp).match(/\d{3}/) || [''])[0],
+        snd: I.snd !== undefined ? cell(r, I.snd).replace(/\s/g, '') : ''
+      });
+    });
+
+    var sumD = 0, sumC = 0, nD = 0, nC = 0;
+    ops.forEach(function (o) { sumD += o.debit; sumC += o.credit; if (o.debit) nD++; if (o.credit) nC++; });
+    var check = { sumDebit: round2(sumD), sumCredit: round2(sumC), nDebit: nD, nCredit: nC, expected: totals, status: 'none' };
+    if (totals && !isNaN(totals.debit) && !isNaN(totals.credit)) {
+      check.status = (Math.abs(totals.debit - sumD) < 1 && Math.abs(totals.credit - sumC) < 1) ? 'ok' : 'mismatch';
+    }
+    if (counts && check.status === 'ok' && (counts.debit !== nD || counts.credit !== nC)) check.status = 'mismatch';
+    var dates = ops.map(function (o) { return o.date; }).sort();
+    return {
+      bank: bank, bankLabel: def.label, ownId: detectOwnId(pages), ops: ops, skippedRows: bad, check: check,
+      from: dates[0] || '', to: dates[dates.length - 1] || ''
+    };
+  }
+
+  function round2(n) { return Math.round(n * 100) / 100; }
+
+  // ---- classification of incoming money -------------------------------
+  var CLASS_LABEL = {
+    income: 'Доход', loan: 'Кредит / заём', own: 'Свои средства', cash: 'Пополнение наличными', refund: 'Возврат / ошибка'
+  };
+
+  function classify(op, ownId) {
+    var p = (op.purpose || '').toLowerCase().replace(/[\s ]/g, '');
+    var who = ((op.snd || '') + (op.cp || '')).replace(/\s/g, '');
+    if (op.knp === '411' || op.knp === '413' || /предоставлениекредит|выдачакредит|кредитныесредства|займ|заём/.test(p)) return 'loan';
+    if ((ownId && who.indexOf(ownId) >= 0) || /междусвоимисчетами|собственныхсредств/.test(p)) return 'own';
+    if (op.knp === '331' || /пополнениесчета|взносналичн|внесениеналичн/.test(p)) return 'cash';
+    if (/возвратсредств|ошибочн|возвратошибочн/.test(p)) return 'refund';
+    return 'income';
+  }
+
+  var DOC_RE = /(сф\s*#|сф\s*№|эсф|esf|счет|счёт|акт\b|накладн|договор|invoice|контракт)/i;
+  var SELF_DOC_RE = /(продажи\s+с\s+kaspi|возмещение\s+(коммерсанту|qr|нпк)|эквайринг|qr)/i;
+  var RISK_RE = /(безвозмездн|благотвор|спонсор|дарени|\bдар\b|займ|заём|ошибочн|возврат)/i;
+
+  function reviewReason(op, cls) {
+    if (cls === 'cash') return 'Пополнение наличными: свои деньги или выручка? По умолчанию не считается доходом';
+    if (cls !== 'income') return '';
+    if (RISK_RE.test(op.purpose || '')) return 'В назначении платежа: возможно, это не выручка';
+    if (!DOC_RE.test(op.purpose || '') && !SELF_DOC_RE.test(op.purpose || '')) return 'Нет ссылки на счёт, акт или счёт-фактуру';
+    return '';
+  }
+
+  function opId(o) {
+    var s = [o.bank, o.doc, o.date, o.credit, (o.cp || '').slice(0, 24)].join('|'), h = 5381;
+    for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0;
+    return o.bank + '-' + (h >>> 0).toString(36);
+  }
+
+  var api = { parseStatement: parseStatement, classify: classify, reviewReason: reviewReason, opId: opId, CLASS_LABEL: CLASS_LABEL, BANKS: BANKS };
+  if (typeof module !== 'undefined' && module.exports) module.exports = api;
+  root.SFParser = api;
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script>
+(function () {
+  'use strict';
+  var P = window.SFParser;
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]; }); };
+  var fmt = function (n) { return Math.round(n).toLocaleString('ru-RU') + ' ₸'; };
+  var fdate = function (iso) { return iso ? iso.slice(8, 10) + '.' + iso.slice(5, 7) + '.' + iso.slice(0, 4) : ''; };
+  var MONTHS = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
+  var MONTHS_G = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+  var ACC_KEY = 'sf16_acc', SES_KEY = 'sf16_session', USR = 'sf16_u_', LEGACY = 'salyqflow_v16';
+  var ID = window.SFId;
+  var MEM = {};
+  function lsGet(k) { try { var v = localStorage.getItem(k); if (v !== null) return v; } catch (e) {} return MEM[k] === undefined ? null : MEM[k]; }
+  function lsSet(k, v) { MEM[k] = v; try { localStorage.setItem(k, v); } catch (e) {} }
+  function lsDel(k) { delete MEM[k]; try { localStorage.removeItem(k); } catch (e) {} }
+  function jget(k, d) { try { var r = JSON.parse(lsGet(k) || 'null'); return r === null ? d : r; } catch (e) { return d; } }
+  var REGIONS = ['Абайская область', 'Акмолинская область', 'Актюбинская область', 'Алматинская область', 'Атырауская область', 'Восточно-Казахстанская область', 'Жамбылская область', 'Жетысуская область', 'Западно-Казахстанская область', 'Карагандинская область', 'Костанайская область', 'Кызылординская область', 'Мангистауская область', 'Павлодарская область', 'Северо-Казахстанская область', 'Туркестанская область', 'Улытауская область', 'город Алматы', 'город Астана', 'город Шымкент'];
+
+  // ---------- state (one record per account, kept on this device) ----------
+  function defaults() {
+    return { settings: { name: '', iin: '', birth: '', phone: '', region: '', district: '', rate: 3, mzp: 85000, rates: {} },
+      files: [], ops: [], over: {}, audit: [], paid: {}, sel: '' };
+  }
+  var CUR = '';
+  var S = defaults();
+  function mergeState(r) { var o = Object.assign(defaults(), r || {}); o.settings = Object.assign(defaults().settings, (r && r.settings) || {}); return o; }
+  function loadFor(iin) { return mergeState(jget(USR + iin, null)); }
+  function save() { if (CUR) lsSet(USR + CUR, JSON.stringify(S)); }
+  function accounts() { return jget(ACC_KEY, {}); }
+  function saveAccounts(a) { lsSet(ACC_KEY, JSON.stringify(a)); }
+  var UI = { filter: 'all', q: '', limit: 100, opPeriod: '', uploads: [], social: null, editId: null, confirmClear: false, confirmDel: false, fails: 0, lockUntil: 0, evs: [] };
+  function resetUI() { UI.filter = 'all'; UI.q = ''; UI.limit = 100; UI.opPeriod = ''; UI.uploads = []; UI.social = null; UI.editId = null; UI.confirmClear = false; UI.confirmDel = false; UI.copyMsg = ''; UI.copyText = ''; }
+
+  // ---------- helpers ----------
+  function effCls(o) { return S.over[o.id] ? S.over[o.id].cls : o.auto; }
+  function why(o) { return S.over[o.id] ? '' : (o.why || ''); }
+  function pkey(date) { return date.slice(0, 4) + '-H' + (+date.slice(5, 7) <= 6 ? 1 : 2); }
+  function plabel(k) { return (k.slice(-1) === '1' ? 'I' : 'II') + ' полугодие ' + k.slice(0, 4); }
+  function rateFor(k) { var r = S.settings.rates[k]; return r === undefined || r === '' || isNaN(r) ? S.settings.rate : Number(r); }
+  function taxOf(income, k) { return Math.round(income * rateFor(k) / 100); }
+  var CL = P.CLASS_LABEL;
+
+  function stats() {
+    var m = {};
+    S.ops.forEach(function (o) {
+      var k = pkey(o.date);
+      var p = m[k] || (m[k] = { key: k, income: 0, n: 0, ex: {}, exN: 0, review: 0, reviewSum: 0, from: o.date, to: o.date });
+      if (o.date < p.from) p.from = o.date;
+      if (o.date > p.to) p.to = o.date;
+      var c = effCls(o);
+      if (c === 'income') { p.income += o.credit; p.n++; } else { p.ex[c] = (p.ex[c] || 0) + o.credit; p.exN++; }
+      if (why(o)) { p.review++; p.reviewSum += o.credit; }
+    });
+    return m;
+  }
+  function selectedKey(st) {
+    var keys = Object.keys(st).sort();
+    if (!keys.length) return '';
+    return st[S.sel] ? S.sel : keys[keys.length - 1];
+  }
+
+  // ---------- navigation ----------
+  window.screen_ = function (id) {
+    [].forEach.call(document.querySelectorAll('.screen'), function (x) { x.classList.remove('active'); });
+    $(id).classList.add('active');
+  };
+  window.enterApp = function () { window.screen_('app'); showPage('dashboard'); };
+
+  // ---------- accounts: registration, login, reset ----------
+  function toHex(u) { var s = ''; for (var i = 0; i < u.length; i++) s += (u[i] < 16 ? '0' : '') + u[i].toString(16); return s; }
+  function fromHex(h) { var u = new Uint8Array(h.length / 2); for (var i = 0; i < u.length; i++) u[i] = parseInt(h.substr(i * 2, 2), 16); return u; }
+  function randHex(n) { var u = new Uint8Array(n), i; if (window.crypto && crypto.getRandomValues) crypto.getRandomValues(u); else for (i = 0; i < n; i++) u[i] = Math.floor(Math.random() * 256); return toHex(u); }
+  function subtleOk() { return !!(window.crypto && crypto.subtle && crypto.subtle.importKey && crypto.subtle.deriveBits); }
+  async function hashPw(pw, saltHex, algo) {
+    var enc = new TextEncoder().encode(pw), salt = fromHex(saltHex);
+    if (algo === 'pbkdf2') {
+      var key = await crypto.subtle.importKey('raw', enc, 'PBKDF2', false, ['deriveBits']);
+      return toHex(new Uint8Array(await crypto.subtle.deriveBits({ name: 'PBKDF2', salt: salt, iterations: 150000, hash: 'SHA-256' }, key, 256)));
+    }
+    var buf = new Uint8Array(salt.length + enc.length); buf.set(salt); buf.set(enc, salt.length);
+    var h = ID.sha256(buf), i, b;
+    for (i = 0; i < 4000; i++) { b = new Uint8Array(h.length + salt.length); b.set(h); b.set(salt, h.length); h = ID.sha256(b); }
+    return toHex(h);
+  }
+  // phone: fixed "+7", then 10 digits (operator code + number)
+  function phoneDigits(v) {
+    v = String(v == null ? '' : v); var d = ID.digits(v);
+    if (/^\s*\+/.test(v) && d[0] === '7') d = d.slice(1);
+    else if (d.length === 11 && (d[0] === '7' || d[0] === '8')) d = d.slice(1);
+    return d.slice(0, 10);
+  }
+  function fmtPhone10(d) {
+    var o = '+7 (' + d.slice(0, 3);
+    if (d.length >= 3) o += ') ' + d.slice(3, 6);
+    if (d.length >= 6) o += '-' + d.slice(6, 8);
+    if (d.length >= 8) o += '-' + d.slice(8, 10);
+    return o;
+  }
+  function normPhone(s) { var d = phoneDigits(s); return d.length === 10 ? '+7' + d : ''; }
+  function phoneView(s) { return fmtPhone10(phoneDigits(s)); }
+  var PW_RULES = [[/.{8,}/, 'не меньше 8 символов'], [/[A-ZА-ЯЁ]/, 'заглавная буква'], [/[a-zа-яё]/, 'строчная буква'], [/\d/, 'цифра'], [/[^A-Za-zА-Яа-яЁё\d\s]/, 'спецсимвол (например ! # $ % @)']];
+  function pwMissing(p) { return PW_RULES.filter(function (r) { return !r[0].test(p); }).map(function (r) { return r[1]; }); }
+  function pwHintUpdate(inputId, hintId) {
+    var h = $(hintId), v = $(inputId).value; if (!h) return;
+    if (!v) { h.textContent = 'Нужно: 8 символов, заглавная и строчная буква, цифра, спецсимвол'; h.className = 'small'; return; }
+    var m = pwMissing(v);
+    if (m.length) { h.textContent = 'Ещё нужно: ' + m.join(', '); h.className = 'small risk-mid'; } else { h.textContent = 'Пароль подходит'; h.className = 'small good'; }
+  }
+  function setMsg(id, text, ok) { var e = $(id); if (!e) return; e.textContent = text || ''; e.className = ok ? 'good' : 'risk-high'; }
+  function lockLeft() { var w = UI.lockUntil - Date.now(); return w > 0 ? Math.ceil(w / 1000) : 0; }
+  function failed() { UI.fails++; if (UI.fails >= 5) { UI.lockUntil = Date.now() + 30000; UI.fails = 0; } }
+  function fillRegions(sel, val) {
+    var list = REGIONS.slice();
+    if (val && list.indexOf(val) < 0) list.unshift(val);
+    sel.innerHTML = '<option value="">Выберите</option>' + list.map(function (r) { return '<option' + (r === val ? ' selected' : '') + '>' + esc(r) + '</option>'; }).join('');
+  }
+  function startSession(iin) { CUR = iin; S = loadFor(iin); lsSet(SES_KEY, iin); resetUI(); window.enterApp(); }
+  function pwProblem(a, b) { var m = pwMissing(a); if (m.length) return 'Пароль слабый. Ещё нужно: ' + m.join(', '); if (a !== b) return 'Пароли не совпадают'; return ''; }
+
+  function onIinInput() {
+    var el = $('regIin'), d = ID.digits(el.value).slice(0, 12);
+    if (el.value !== d) el.value = d;
+    var m = $('regIinMsg'), bi = $('regBirth');
+    if (d.length < 12) { bi.value = ''; m.textContent = d.length ? 'Введено ' + d.length + ' из 12 цифр' : ''; m.className = 'small'; return; }
+    var p = ID.parse(d);
+    if (p.ok) { bi.value = fdate(p.birth); m.textContent = 'ИИН прошёл проверку. Дату рождения взяли из него.'; m.className = 'small good'; }
+    else { bi.value = ''; m.textContent = p.error; m.className = 'small risk-high'; }
+  }
+
+  async function doRegister() {
+    var btn = $('regBtn'), f = {
+      name: $('regName').value.trim(), iin: ID.digits($('regIin').value), phone: normPhone($('regPhone').value),
+      region: $('regRegion').value, district: $('regDistrict').value.trim(),
+      rate: parseFloat(String($('regRate').value).replace(',', '.')), pw: $('regPw').value, pw2: $('regPw2').value
+    }, p = ID.parse(f.iin), acc = accounts(), err = '';
+    if (!f.name) err = 'Укажите наименование ИП';
+    else if (!p.ok) err = p.error;
+    else if (!f.phone) err = 'Телефон: после +7 введите ещё 10 цифр: код оператора и номер';
+    else if (!f.region) err = 'Выберите область или город';
+    else if (!f.district) err = 'Укажите район';
+    else if (isNaN(f.rate) || f.rate < 0 || f.rate > 20) err = 'Ставка должна быть от 0 до 20 процентов';
+    else if (pwProblem(f.pw, f.pw2)) err = pwProblem(f.pw, f.pw2);
+    else if (acc[f.iin]) err = 'Кабинет с этим ИИН уже есть на этом устройстве. Нажмите «Войти».';
+    if (err) { setMsg('regErr', err); return; }
+    setMsg('regErr', '');
+    btn.disabled = true; btn.textContent = 'Создаю кабинет…';
+    try {
+      var algo = subtleOk() ? 'pbkdf2' : 'sha256x', salt = randHex(16), hash = await hashPw(f.pw, salt, algo);
+      acc[f.iin] = { salt: salt, algo: algo, hash: hash, phone: f.phone, created: new Date().toISOString() };
+      saveAccounts(acc);
+      var st = defaults();
+      st.settings.name = f.name; st.settings.iin = f.iin; st.settings.birth = p.birth; st.settings.phone = f.phone;
+      st.settings.region = f.region; st.settings.district = f.district; st.settings.rate = f.rate;
+      var old = jget(LEGACY, null);              // data saved by the earlier version on this device
+      if (old && Object.keys(acc).length === 1 && old.ops && old.ops.length) {
+        ['files', 'ops', 'over', 'audit', 'paid'].forEach(function (k) { if (old[k]) st[k] = old[k]; });
+        if (old.settings) { if (old.settings.mzp) st.settings.mzp = old.settings.mzp; st.settings.rates = old.settings.rates || {}; }
+      }
+      CUR = f.iin; S = st; save();
+      ['regPw', 'regPw2'].forEach(function (i) { $(i).value = ''; });
+      startSession(f.iin);
+    } catch (e) {
+      setMsg('regErr', 'Не удалось создать кабинет: ' + String((e && e.message) || e).slice(0, 160));
+    }
+    btn.disabled = false; btn.textContent = 'Создать кабинет';
+  }
+
+  async function doLogin() {
+    var iin = ID.digits($('lgId').value), pw = $('lgPw').value, acc = accounts()[iin], w = lockLeft(), btn = $('lgBtn');
+    if (w) { setMsg('lgErr', 'Слишком много попыток. Подождите ' + w + ' с.'); return; }
+    if (iin.length !== 12) { setMsg('lgErr', 'Введите ИИН: 12 цифр'); return; }
+    if (!acc) { setMsg('lgErr', 'На этом устройстве нет кабинета с таким ИИН. Данные хранятся там, где вы регистрировались.'); return; }
+    if (!pw) { setMsg('lgErr', 'Введите пароль'); return; }
+    btn.disabled = true; btn.textContent = 'Проверяю…';
+    try {
+      var h = await hashPw(pw, acc.salt, acc.algo);
+      if (h === acc.hash) { UI.fails = 0; setMsg('lgErr', ''); $('lgPw').value = ''; startSession(iin); }
+      else { failed(); setMsg('lgErr', 'Неверный ИИН или пароль'); }
+    } catch (e) { setMsg('lgErr', 'Не удалось проверить пароль в этом браузере'); }
+    btn.disabled = false; btn.textContent = 'Войти';
+  }
+
+  async function doReset() {
+    var iin = ID.digits($('rsIin').value), ph = normPhone($('rsPhone').value), a = $('rsPw').value, b = $('rsPw2').value, acc = accounts(), r = acc[iin];
+    if (!r || !ph || r.phone !== ph) { setMsg('rsErr', 'ИИН или телефон не совпадают с теми, что указаны при регистрации'); return; }
+    var pr = pwProblem(a, b); if (pr) { setMsg('rsErr', pr); return; }
+    try {
+      r.algo = subtleOk() ? 'pbkdf2' : 'sha256x'; r.salt = randHex(16); r.hash = await hashPw(a, r.salt, r.algo);
+      saveAccounts(acc); setMsg('rsErr', '');
+      ['rsPw', 'rsPw2'].forEach(function (i) { $(i).value = ''; });
+      $('lgId').value = iin; window.screen_('login'); toast('Пароль изменён. Войдите с новым паролем.');
+    } catch (e) { setMsg('rsErr', 'Не удалось сменить пароль в этом браузере'); }
+  }
+
+  function logout() { CUR = ''; S = defaults(); lsDel(SES_KEY); resetUI(); window.screen_('landing'); }
+
+  async function changePw() {
+    var old = $('pfOld').value, a = $('pfNew').value, b = $('pfNew2').value, acc = accounts(), r = acc[CUR];
+    var pr = pwProblem(a, b); if (pr) { setMsg('pfPwMsg', pr); return; }
+    try {
+      if (!r || (await hashPw(old, r.salt, r.algo)) !== r.hash) { setMsg('pfPwMsg', 'Текущий пароль неверный'); return; }
+      r.algo = subtleOk() ? 'pbkdf2' : 'sha256x'; r.salt = randHex(16); r.hash = await hashPw(a, r.salt, r.algo);
+      saveAccounts(acc); ['pfOld', 'pfNew', 'pfNew2'].forEach(function (i) { $(i).value = ''; }); setMsg('pfPwMsg', 'Пароль изменён', true);
+    } catch (e) { setMsg('pfPwMsg', 'Не удалось сменить пароль в этом браузере'); }
+  }
+
+  // ---------- small UI helpers ----------
+  var toastTimer = null;
+  function toast(msg) {
+    var t = $('toast'); if (!t) return;
+    t.textContent = msg; t.style.display = 'block';
+    clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.style.display = 'none'; }, 4500);
+  }
+  function showInfo(title, html) { $('infoHead').textContent = title; $('infoBody').innerHTML = html; $('infoModal').style.display = 'flex'; }
+  function copyText(text, okMsg) {
+    var fallback = function () {
+      showInfo('Скопируйте текст', '<div class="small" style="margin:0 0 8px">Автоматически скопировать не удалось. Текст выделен: нажмите «Копировать» в меню телефона.</div><textarea id="infoArea" class="copybox" readonly rows="9">' + esc(text) + '</textarea>');
+      var ta = $('infoArea'); if (ta) { ta.focus(); ta.select(); try { ta.setSelectionRange(0, text.length); } catch (e) {} }
+    };
+    try { navigator.clipboard.writeText(text).then(function () { toast(okMsg || 'Скопировано'); }, fallback); } catch (e) { fallback(); }
+  }
+  function dstr(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  function showPage(id, btn) {
+    [].forEach.call(document.querySelectorAll('.page'), function (x) { x.classList.remove('active'); });
+    $(id).classList.add('active');
+    [].forEach.call(document.querySelectorAll('.nav'), function (x) { x.classList.toggle('active', x.getAttribute('data-page') === id); });
+    window.scrollTo(0, 0);
+    render(id);
+  }
+  window.showPage = showPage;
+  function render(id) {
+    ({ dashboard: renderDashboard, taxes: renderTaxes, calendar: renderCalendar, social: renderSocial, profile: renderProfile }[id] || function () {})();
+    $('hdrName').textContent = S.settings.name;
+  }
+  function renderCurrent() { var a = document.querySelector('.page.active'); if (a) render(a.id); }
+
+  // ---------- dashboard ----------
+  function renderDashboard() {
+    var st = stats(), k = selectedKey(st), el = $('dashboard'), h = '';
+    h += '<div class="crumb">Главная / Личный кабинет</div><h1 class="title">' + esc(S.settings.name) + '</h1><div class="subtitle">Упрощённая декларация · ' + esc(regionLine()) + '</div>';
+    if (!k) {
+      h += '<div class="empty"><div class="empty-ico">📄</div><h2>Загрузите выписку из банка</h2><p>SALYQFLOW найдёт в ней поступления, отделит доход от кредитов и своих денег и посчитает налог. Поддерживаются PDF-выписки Kaspi, Halyk и ЦентрКредит.</p><button class="btn btnp" data-act="goto" data-page="taxes">Загрузить выписку</button></div>';
+      el.innerHTML = h; return;
+    }
+    var p = st[k], tax = taxOf(p.income, k), exTotal = 0;
+    Object.keys(p.ex).forEach(function (c) { exTotal += p.ex[c]; });
+    var keys = Object.keys(st).sort().reverse();
+    var bad = S.files.filter(function (f) { return f.status === 'mismatch'; }).length;
+    h += '<div class="period-row"><label for="dashPeriod">Период</label><select id="dashPeriod">' + keys.map(function (x) { return '<option value="' + x + '"' + (x === k ? ' selected' : '') + '>' + plabel(x) + '</option>'; }).join('') + '</select></div>';
+    if (bad) h += '<div class="notice warn"><strong>Выписка не сошлась с итогами банка</strong><div class="small">В ' + bad + ' файле(ах) сумма разобранных операций отличается от итогов в самой выписке. Откройте «Налоги и поступления» и проверьте.</div></div>';
+    if (p.review) h += '<div class="notice warn"><div><strong>' + p.review + ' ' + plural(p.review, 'операция требует', 'операции требуют', 'операций требуют') + ' проверки</strong><div class="small">На сумму ' + fmt(p.reviewSum) + '. Пока вы их не подтвердили, сумма остаётся в расчёте так, как её определила программа.</div></div><button class="btn" data-act="goto" data-page="taxes" data-filter="review">Проверить</button></div>';
+    h += '<div class="grid4">' +
+      card('Доход за период', fmt(p.income), '<div class="small">' + p.n + ' ' + plural(p.n, 'поступление', 'поступления', 'поступлений') + '</div>') +
+      card('Ставка', rateFor(k).toString().replace('.', ',') + '%', '<div class="small">от дохода за полугодие</div>', 'blue') +
+      card('Расчётный налог', fmt(tax), '<div class="small">срок уплаты — в календаре</div>', 'orange') +
+      card('Не считается доходом', fmt(exTotal), '<div class="small">кредиты, свои деньги, возвраты</div>') + '</div>';
+    h += payBox(k, p, tax);
+    h += '<div class="two"><div class="box"><div class="box-head">Что не вошло в доход</div><div class="box-body">';
+    var exK = Object.keys(p.ex);
+    h += exK.length ? exK.map(function (c) { return '<div class="demo-row"><span>' + esc(CL[c]) + '</span><strong>' + fmt(p.ex[c]) + '</strong></div>'; }).join('') : '<div class="small">Всё, что поступило, учтено как доход.</div>';
+    h += '<div class="small" style="margin-top:10px">Данные в загруженных выписках: с ' + fdate(p.from) + ' по ' + fdate(p.to) + '. Если выписка охватывает период не полностью, налог будет занижен.</div></div></div>';
+    h += '<div class="box"><div class="box-head">Ближайшие сроки</div><div class="box-body">' + deadlines().slice(0, 3).map(function (e) { return deadlineRow(e); }).join('') + '</div></div></div>';
+    h += acctBox() + glossary();
+    h += '<div class="small" style="margin-top:14px">Расчёт справочный: он сделан по загруженным выпискам и не заменяет бухгалтера и данные налогового кабинета.</div>';
+    el.innerHTML = h;
+    $('dashPeriod').onchange = function () { S.sel = this.value; save(); renderDashboard(); };
+  }
+  function regionLine() { var s = S.settings; return [s.region, s.district].filter(Boolean).join(', '); }
+  function card(label, value, extra, cls) { return '<div class="card"><div class="label">' + label + '</div><div class="value ' + (cls || '') + '">' + value + '</div>' + (extra || '') + '</div>'; }
+  function plural(n, a, b, c) { var m = n % 100, d = n % 10; if (m > 10 && m < 20) return c; if (d === 1) return a; if (d > 1 && d < 5) return b; return c; }
+
+  // ---------- calendar ----------
+  function deadlines() {
+    var now = new Date(); now.setHours(0, 0, 0, 0);
+    var out = [], st = stats();
+    function add(date, title, note, key) { if (date >= now) out.push({ date: date, title: title, note: note, key: key }); }
+    for (var y = now.getFullYear() - 1; y <= now.getFullYear() + 1; y++) {
+      add(new Date(y, 7, 15), 'Упрощённая декларация за I полугодие ' + y, 'Подача до 15 августа', y + '-H1');
+      add(new Date(y, 7, 25), 'Уплата налога за I полугодие ' + y, 'Срок уплаты ориентировочно до 25 августа — уточните в налоговом кабинете', y + '-H1');
+      add(new Date(y + 1, 1, 15), 'Упрощённая декларация за II полугодие ' + y, 'Подача до 15 февраля', y + '-H2');
+      add(new Date(y + 1, 1, 25), 'Уплата налога за II полугодие ' + y, 'Срок уплаты ориентировочно до 25 февраля — уточните в налоговом кабинете', y + '-H2');
+    }
+    for (var i = 0; i < 4; i++) {
+      var d = new Date(now.getFullYear(), now.getMonth() + i, 25);
+      var pm = new Date(d.getFullYear(), d.getMonth() - 1, 1);
+      add(d, 'Социальные платежи за ' + MONTHS[pm.getMonth()] + ' ' + pm.getFullYear(), 'ОПВ, ОПВР, СО и ВОСМС — до 25 числа следующего месяца', 'social');
+    }
+    out.sort(function (a, b) { return a.date - b.date; });
+    out.forEach(function (e) {
+      if (e.key === 'social') e.amount = fmt(socialTotal());
+      else if (st[e.key] && /^Уплата/.test(e.title)) e.amount = fmt(taxOf(st[e.key].income, e.key)) + ' (по выпискам)';
+    });
+    return out;
+  }
+  function deadlineRow(e, withActions) {
+    var days = Math.round((e.date - new Date(new Date().setHours(0, 0, 0, 0))) / 86400000);
+    return '<div class="calendar-item"><div class="datebox"><strong>' + e.date.getDate() + '</strong>' + MONTHS_G[e.date.getMonth()].slice(0, 3) + '</div><div><strong>' + esc(e.title) + '</strong><div class="small">' + esc(e.note) + (e.amount ? ' · ' + esc(e.amount) : '') + '</div></div><span class="tag">' + (days === 0 ? 'сегодня' : 'через ' + days + ' дн.') + '</span>' + (withActions ? evActions(e) : '') + '</div>';
+  }
+  function renderCalendar() {
+    UI.evs = deadlines().slice(0, 10);
+    $('calendar').innerHTML = '<div class="crumb">Главная / Налоговый календарь</div><h1 class="title">Налоговый календарь</h1><div class="subtitle">Сроки декларации, налога и социальных платежей для ИП на упрощёнке</div>' +
+      '<div class="box"><div class="box-body">' + UI.evs.map(function (e) { return deadlineRow(e, true); }).join('') + '</div></div>' +
+      '<h2 class="section">Напоминания</h2><div class="box"><div class="box-body"><div class="small" style="margin:0">Самый надёжный способ: добавить сроки в календарь телефона, там напоминание сработает само. Файл ниже добавит все ближайшие сроки с напоминанием за 3 дня и за 1 день.</div>' +
+      '<div class="actions"><button class="btn btnp" data-act="ics">Скачать сроки в календарь (.ics)</button></div>' +
+      '<div class="small" style="margin-top:10px">Кнопки «Telegram» и «WhatsApp» у каждого срока открывают мессенджер с готовым текстом: отправьте его себе. Сообщения сами, без вашего нажатия, приложение отправить не может: для этого нужен сервер и бот.</div></div></div>' +
+      '<div class="small" style="margin-top:12px">Сроки взяты из открытых источников для режима упрощённой декларации с 2026 года. Перед уплатой сверьте их в налоговом кабинете: приложение не подключено к государственным системам.</div>';
+  }
+
+  // ---------- plain-language hints ----------
+  var HINTS = {
+    income: 'Деньги за ваши товары или услуги. С них считается налог.',
+    loan: 'Кредит или заём: это деньги банка или другого человека, которые нужно вернуть. Это не выручка, налог с них не платят. Если «заём» на самом деле оплата от клиента, выберите «Доход» и напишите причину.',
+    own: 'Перевод между вашими счетами или вложение собственных денег. Вы их не зарабатывали, налога нет.',
+    cash: 'Деньги, внесённые на счёт наличными. Если это ваши личные деньги, дохода нет. Если это выручка от клиентов, полученная наличными, это доход.',
+    refund: 'Деньги вернули: ошибочный платёж или возврат. Это не доход, но сохраните подтверждение.'
+  };
+  function hintFor(c) { return esc(HINTS[c] || ''); }
+  function glossary() {
+    var it = function (q, a) { return '<div style="margin:0 0 10px"><strong>' + q + '</strong><div class="small">' + a + '</div></div>'; };
+    return '<details class="gloss"><summary>Как читать эти цифры</summary><div class="gloss-body">' +
+      it('Полугодие', 'Налог на упрощённой декларации считается за полгода: январь–июнь и июль–декабрь.') +
+      it('Доход', HINTS.income) +
+      it('Кредит или заём', HINTS.loan) + it('Свои средства', HINTS.own) + it('Пополнение наличными', HINTS.cash) + it('Возврат', HINTS.refund) +
+      it('«На проверке»', 'Операции, по которым программа не уверена: например, нет ссылки на счёт или акт. Откройте и подтвердите или поменяйте. Ваше решение попадёт в журнал.') +
+      it('«Итоги совпали»', 'Сумма разобранных операций равна итогам, которые банк напечатал в самой выписке. Значит, ничего не потерялось при чтении.') +
+      '<div class="small">Это пояснения для ориентира, а не налоговая консультация.</div></div></details>';
+  }
+
+  // ---------- payment helper ----------
+  function dueOf(k) { var y = +k.slice(0, 4); return k.slice(-1) === '1' ? new Date(y, 7, 25) : new Date(y + 1, 1, 25); }
+  function fdD(d) { return fdate(dstr(d)); }
+  function payText(k, tax) {
+    var s = S.settings;
+    return ['Налог ИП по упрощённой декларации', 'Плательщик: ' + s.name, 'ИИН: ' + s.iin, 'Период: ' + plabel(k), 'Сумма: ' + Math.round(tax) + ' ₸', 'Срок: до ' + fdD(dueOf(k)),
+      'Назначение: налог по упрощённой декларации за ' + plabel(k), '(расчёт справочный: сверьте сумму в кабинете налогоплательщика)'].join('\n');
+  }
+  function payBox(k, p, tax) {
+    var due = dueOf(k), today = new Date(); today.setHours(0, 0, 0, 0);
+    var paid = !!S.paid['tax-' + k], late = !paid && due < today;
+    var status = paid ? '<span class="good">Отмечено оплаченным</span>' : late ? '<span class="risk-mid">Срок прошёл: проверьте в кабинете налогоплательщика</span>' : '<strong>до ' + fdD(due) + '</strong>';
+    var row = function (a, b) { return '<div class="demo-row"><span>' + a + '</span><span class="pay-v">' + b + '</span></div>'; };
+    return '<div class="box" style="margin-top:14px"><div class="box-head">Оплатить налог · ' + plabel(k) + '</div><div class="box-body">' +
+      row('Плательщик', esc(S.settings.name)) + row('ИИН', esc(S.settings.iin)) + row('Сумма', '<strong>' + fmt(tax) + '</strong>') + row('Срок уплаты', status) +
+      '<div class="actions"><button class="btn btnp" data-act="copyPay" data-k="' + k + '">Скопировать данные для оплаты</button><button class="btn" data-act="taxPaid" data-k="' + k + '">' + (paid ? 'Снять отметку' : 'Отметить оплаченным') + '</button></div>' +
+      '<div class="small" style="margin-top:10px">' + (tax === 0 ? 'За этот период налог 0 ₸. ' : '') + 'SALYQFLOW не проводит платежи и не знает реквизитов получателя: их подставит банк или кабинет налогоплательщика. Скопируйте сумму, откройте оплату налогов в приложении банка и сверьте цифры.</div></div></div>';
+  }
+  function acctBox() {
+    return '<div class="box" style="margin-top:14px"><div class="box-head">Для бухгалтера или налоговой</div><div class="box-body"><div class="small" style="margin:0">Один файл Excel: сводка по периодам, все поступления и журнал ваших решений. Или короткая сводка текстом, чтобы отправить в мессенджер.</div>' +
+      '<div class="actions"><button class="btn btnp" data-act="summary">Скачать сводку (Excel)</button><button class="btn" data-act="summaryText">Скопировать текстом</button></div></div></div>';
+  }
+
+  // ---------- reminders ----------
+  function remText(e) { return 'Напоминание SALYQFLOW: ' + e.title + ' — до ' + fdD(e.date) + (e.amount ? ' · ' + e.amount : ''); }
+  function ymd(d) { return dstr(d).replace(/-/g, ''); }
+  function gcalUrl(e) {
+    var nx = new Date(e.date.getFullYear(), e.date.getMonth(), e.date.getDate() + 1);
+    return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(e.title) + '&dates=' + ymd(e.date) + '/' + ymd(nx) + '&details=' + encodeURIComponent(e.note + (e.amount ? ' · ' + e.amount : ''));
+  }
+  function evActions(e) {
+    var tx = remText(e);
+    return '<div class="cal-actions"><a class="btn" target="_blank" rel="noopener noreferrer" href="' + esc(gcalUrl(e)) + '">В Google Календарь</a>' +
+      '<a class="btn" target="_blank" rel="noopener noreferrer" href="' + esc('https://t.me/share/url?url=%20&text=' + encodeURIComponent(tx)) + '">В Telegram</a>' +
+      '<a class="btn" target="_blank" rel="noopener noreferrer" href="' + esc('https://wa.me/?text=' + encodeURIComponent(tx)) + '">В WhatsApp</a></div>';
+  }
+  function icsEsc(s) { return String(s).replace(/\\/g, '\\\\').replace(/;/g, '\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n'); }
+  function buildIcs(list) {
+    var now = new Date(), stamp = now.getUTCFullYear() + String(now.getUTCMonth() + 1).padStart(2, '0') + String(now.getUTCDate()).padStart(2, '0') + 'T' + String(now.getUTCHours()).padStart(2, '0') + String(now.getUTCMinutes()).padStart(2, '0') + '00Z';
+    var L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//SALYQFLOW//RU', 'CALSCALE:GREGORIAN'];
+    list.forEach(function (e, i) {
+      var nx = new Date(e.date.getFullYear(), e.date.getMonth(), e.date.getDate() + 1);
+      L.push('BEGIN:VEVENT', 'UID:sf-' + ymd(e.date) + '-' + i + '-' + randHex(4) + '@salyqflow', 'DTSTAMP:' + stamp, 'DTSTART;VALUE=DATE:' + ymd(e.date), 'DTEND;VALUE=DATE:' + ymd(nx),
+        'SUMMARY:' + icsEsc(e.title), 'DESCRIPTION:' + icsEsc(e.note + (e.amount ? ' · ' + e.amount : '')),
+        'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:' + icsEsc(e.title), 'TRIGGER:-P3D', 'END:VALARM',
+        'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:' + icsEsc(e.title), 'TRIGGER:-P1D', 'END:VALARM', 'END:VEVENT');
+    });
+    L.push('END:VCALENDAR');
+    return L.join('\r\n') + '\r\n';
+  }
+
+  // ---------- social ----------
+  function socialBase() { return UI.social != null ? UI.social : S.settings.mzp; }
+  function socialLines() {
+    var b = Number(socialBase()) || 0, z = Number(S.settings.mzp) || 0;
+    return [['ОПВ (10% от базы)', b * 0.10], ['ОПВР (3,5% от базы)', b * 0.035], ['Социальные отчисления (5% от базы)', b * 0.05], ['ВОСМС (5% от 1,4 МЗП)', z * 1.4 * 0.05]];
+  }
+  function socialTotal() { return Math.round(socialLines().reduce(function (a, l) { return a + l[1]; }, 0)); }
+  function renderSocial() {
+    var lines = socialLines(), now = new Date(), today = new Date(now.getFullYear(), now.getMonth(), now.getDate()), rows = '';
+    for (var i = 0; i < 7; i++) {
+      var m = new Date(now.getFullYear(), now.getMonth() - 5 + i, 1), mk = m.getFullYear() + '-' + String(m.getMonth() + 1).padStart(2, '0');
+      var due = new Date(m.getFullYear(), m.getMonth() + 1, 25), paid = !!S.paid[mk];
+      var status = paid ? '<span class="good">Оплачено</span>' : (due < today ? '<span class="risk-high">Просрочено?</span>' : '<span class="tag">К оплате</span>');
+      rows += '<tr><td>' + MONTHS[m.getMonth()] + ' ' + m.getFullYear() + '</td><td>до ' + due.getDate() + ' ' + MONTHS_G[due.getMonth()] + '</td><td><strong>' + fmt(socialTotal()) + '</strong></td><td>' + status + '</td><td><button class="btn" data-act="paid" data-m="' + mk + '">' + (paid ? 'Снять отметку' : 'Отметить оплаченным') + '</button></td></tr>';
+    }
+    $('social').innerHTML = '<div class="crumb">Главная / Социальные платежи</div><h1 class="title">Социальные платежи ИП за себя</h1><div class="subtitle">Ежемесячные взносы. Отметка «оплачено» ставится вручную: приложение не проводит платежи.</div>' +
+      '<div class="box"><div class="box-head">Расчёт за месяц</div><div class="box-body"><div class="field" style="max-width:360px"><label for="socBase">База для ОПВ, ОПВР и СО, ₸ в месяц (не меньше 1 МЗП)</label><input id="socBase" type="number" min="0" value="' + socialBase() + '"></div>' +
+      lines.map(function (l) { return '<div class="demo-row"><span>' + l[0] + '</span><strong>' + fmt(l[1]) + '</strong></div>'; }).join('') +
+      '<div class="demo-row"><span><strong>Итого в месяц</strong></span><strong>' + fmt(socialTotal()) + '</strong></div>' +
+      '<div class="small" style="margin-top:10px">МЗП задана в профиле (' + fmt(S.settings.mzp) + '). Ставки взяты из открытых источников на 2026 год; точную сумму уточните в налоговом кабинете.</div></div></div>' +
+      '<h2 class="section">Месяцы</h2><div class="tablebox"><table class="table" style="min-width:640px"><thead><tr><th>За месяц</th><th>Срок</th><th>Сумма</th><th>Статус</th><th></th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+    $('socBase').oninput = function () { UI.social = this.value === '' ? 0 : Number(this.value); var pos = this.selectionStart; renderSocial(); var e = $('socBase'); e.focus(); try { e.setSelectionRange(pos, pos); } catch (x) {} };
+  }
+
+  // ---------- profile ----------
+  function renderProfile() {
+    var s = S.settings, rs = REGIONS.slice();
+    if (s.region && rs.indexOf(s.region) < 0) rs.unshift(s.region);
+    var sel = '<div class="field"><label for="pfRegion">Область или город</label><select id="pfRegion">' + rs.map(function (r) { return '<option' + (r === s.region ? ' selected' : '') + '>' + esc(r) + '</option>'; }).join('') + '</select></div>';
+    $('profile').innerHTML = '<div class="crumb">Главная / Данные предпринимателя</div><h1 class="title">Данные предпринимателя</h1><div class="subtitle">Хранятся только на этом устройстве</div>' +
+      '<div class="box"><div class="box-body">' +
+      field('pfName', 'Наименование ИП', s.name) + field('pfIin', 'ИИН (меняется только новой регистрацией)', s.iin, 'text', 'disabled') + field('pfBirth', 'Дата рождения (из ИИН)', fdate(s.birth), 'text', 'disabled') +
+      field('pfPhone', 'Телефон', phoneView(s.phone), 'tel', 'inputmode="tel"') + sel + field('pfDistrict', 'Район', s.district) +
+      field('pfRate', 'Ставка налога по умолчанию, %', s.rate, 'number', 'step="0.1" min="0" max="20"') +
+      field('pfMzp', 'МЗП, ₸ (для социальных платежей)', s.mzp, 'number', 'min="0"') +
+      '<div class="small">Ставку для вашего района подтвердите по решению маслихата. Для отдельного полугодия её можно изменить в таблице на странице «Налоги и поступления».</div>' +
+      '<div class="actions"><button class="btn btnp" data-act="saveProfile">Сохранить</button><span id="pfSaved" class="good"></span></div></div></div>' +
+      '<h2 class="section">Пароль</h2><div class="box"><div class="box-body">' + field('pfOld', 'Текущий пароль', '', 'password', 'autocomplete="current-password"') + field('pfNew', 'Новый пароль', '', 'password', 'autocomplete="new-password"') + '<div id="pfNewHint" class="small">Нужно: 8 символов, заглавная и строчная буква, цифра, спецсимвол</div>' + field('pfNew2', 'Повторите новый пароль', '', 'password', 'autocomplete="new-password"') +
+      '<div class="actions"><button class="btn" data-act="changePw">Сменить пароль</button><span id="pfPwMsg" class="good"></span></div></div></div>' +
+      '<h2 class="section">Данные на устройстве</h2><div class="box"><div class="box-body"><div class="small" style="margin:0">Загружено выписок: ' + S.files.length + ', поступлений: ' + S.ops.length + '. Сами PDF-файлы не сохраняются и никуда не отправляются. Это демо без сервера: кабинет и пароль существуют только в этом браузере, а забытый пароль можно сбросить по ИИН и телефону, указанным при регистрации.</div>' +
+      '<div class="actions"><button class="btn" data-act="clearData">' + (UI.confirmClear ? 'Точно удалить? Нажмите ещё раз' : 'Удалить загруженные выписки и журнал') + '</button>' +
+      '<button class="btn" data-act="deleteAcct">' + (UI.confirmDel ? 'Точно удалить кабинет? Нажмите ещё раз' : 'Удалить кабинет полностью') + '</button></div></div></div>';
+  }
+  function field(id, label, val, type, extra) { return '<div class="field"><label for="' + id + '">' + label + '</label><input id="' + id + '" type="' + (type || 'text') + '" value="' + esc(val) + '" ' + (extra || '') + '></div>'; }
+
+  // ---------- taxes page ----------
+  function renderTaxes() {
+    var st = stats(), keys = Object.keys(st).sort().reverse();
+    if (!UI.opPeriod || (UI.opPeriod !== 'all' && !st[UI.opPeriod])) UI.opPeriod = selectedKey(st) || 'all';
+    // files
+    var fl = S.files.length ? '<div class="tablebox"><table class="table" style="min-width:680px"><thead><tr><th>Банк</th><th>Файл</th><th>Период операций</th><th>Поступления</th><th>Сверка с банком</th><th></th></tr></thead><tbody>' +
+      S.files.map(function (f) {
+        var chk = f.status === 'ok' ? '<span class="good">✓ итоги совпали</span>' : f.status === 'mismatch' ? '<span class="risk-mid">не совпало</span><div class="small">' + esc(f.note || '') + '</div>' : '<span class="small">итогов в файле нет</span>';
+        return '<tr><td><strong>' + esc(f.bankLabel) + '</strong></td><td>' + esc(f.name) + '</td><td>' + fdate(f.from) + ' – ' + fdate(f.to) + '</td><td>' + f.nIn + ' · ' + fmt(f.sumIn) + '</td><td>' + chk + '</td><td><button class="btn" data-act="rmFile" data-id="' + esc(f.id) + '">Убрать</button></td></tr>';
+      }).join('') + '</tbody></table></div>' : '';
+    var ups = UI.uploads.map(function (u) { return '<div class="up-' + u.state + '">' + (u.state === 'work' ? '⏳ ' : u.state === 'ok' ? '✓ ' : u.state === 'warn' ? '⚠ ' : '✕ ') + esc(u.name) + ': ' + esc(u.text) + '</div>'; }).join('');
+    // period table
+    var pt = keys.length ? '<h2 class="section">Налог по периодам</h2><div class="tablebox"><table class="table" style="min-width:760px"><thead><tr><th>Период</th><th>Доход</th><th>Ставка, %</th><th>Налог</th><th>Не доход</th><th>На проверке</th></tr></thead><tbody>' +
+      keys.map(function (k) {
+        var p = st[k], ex = 0; Object.keys(p.ex).forEach(function (c) { ex += p.ex[c]; });
+        return '<tr><td><strong>' + plabel(k) + '</strong><div class="small">' + fdate(p.from) + ' – ' + fdate(p.to) + '</div></td><td>' + fmt(p.income) + '<div class="small">' + p.n + ' опер.</div></td><td><input class="rate" type="number" step="0.1" min="0" data-act-in="rate" data-k="' + k + '" value="' + rateFor(k) + '"></td><td><strong>' + fmt(taxOf(p.income, k)) + '</strong></td><td>' + fmt(ex) + '</td><td>' + (p.review ? '<span class="risk-mid">' + p.review + ' · ' + fmt(p.reviewSum) + '</span>' : '—') + '</td></tr>';
+      }).join('') + '</tbody></table></div>' : '';
+    // operations
+    var ops = S.ops.filter(function (o) { return UI.opPeriod === 'all' || pkey(o.date) === UI.opPeriod; });
+    var q = UI.q.trim().toLowerCase();
+    var list = ops.filter(function (o) {
+      var c = effCls(o);
+      if (UI.filter === 'income' && c !== 'income') return false;
+      if (UI.filter === 'other' && c === 'income') return false;
+      if (UI.filter === 'review' && !why(o)) return false;
+      if (q && (o.cp + ' ' + o.purpose + ' ' + o.credit).toLowerCase().indexOf(q) < 0) return false;
+      return true;
+    }).sort(function (a, b) { return a.date < b.date ? 1 : a.date > b.date ? -1 : 0; });
+    var shown = list.slice(0, UI.limit);
+    var seg = [['all', 'Все'], ['income', 'Доход'], ['other', 'Не доход'], ['review', 'На проверке']].map(function (x) { return '<button data-act="filter" data-f="' + x[0] + '" class="' + (UI.filter === x[0] ? 'on' : '') + '">' + x[1] + '</button>'; }).join('');
+    var ot = S.ops.length ? '<h2 class="section">Поступления</h2><div class="toolbar"><select id="opPeriod"><option value="all"' + (UI.opPeriod === 'all' ? ' selected' : '') + '>Все периоды</option>' + keys.map(function (k) { return '<option value="' + k + '"' + (UI.opPeriod === k ? ' selected' : '') + '>' + plabel(k) + '</option>'; }).join('') + '</select><div class="seg">' + seg + '</div><input id="opSearch" placeholder="Поиск по контрагенту или назначению" value="' + esc(UI.q) + '"><button class="btn btnp" data-act="copy">Копировать для Excel</button><button class="btn" data-act="xlsx">Скачать Excel</button><button class="btn" data-act="csv">CSV</button></div>' + copyBlock() +
+      '<div class="tablebox"><table class="table" style="min-width:820px"><thead><tr><th>Дата</th><th>Банк</th><th>Контрагент и назначение</th><th>Сумма</th><th>Как учтено</th><th></th></tr></thead><tbody>' +
+      (shown.length ? shown.map(opRow).join('') : '<tr><td colspan="6" class="small">Нет операций по выбранным условиям.</td></tr>') + '</tbody></table></div>' +
+      '<div class="small" style="margin-top:8px">Показано ' + shown.length + ' из ' + list.length + (list.length > shown.length ? ' · <a href="#" data-act="more">показать ещё</a>' : '') + '</div>' : '';
+    var audit = S.audit.length ? '<h2 class="section">Журнал решений</h2><div class="box"><div class="box-body">' + S.audit.slice(-15).reverse().map(function (a) { return '<div class="auditline">' + esc(a.ts) + ' · ' + fmt(a.amount) + ' · ' + esc(a.cp) + ': ' + esc(CL[a.from]) + ' → ' + esc(CL[a.to]) + (a.reason ? ' · причина: ' + esc(a.reason) : ' · подтверждено') + '</div>'; }).join('') + '</div></div>' : '';
+    $('taxes').innerHTML = '<div class="crumb">Главная / Налоги и поступления</div><h1 class="title">Налоги и поступления</h1><div class="subtitle">Загрузите PDF-выписки Kaspi, Halyk или ЦентрКредит, и SALYQFLOW посчитает налог с дохода.</div>' +
+      '<label class="drop" id="dropzone" for="pdfInput"><input id="pdfInput" type="file" accept="application/pdf,.pdf" multiple><strong>Выберите PDF-выписки или перетащите их сюда</strong><div class="small">Файлы читаются прямо в браузере и никуда не отправляются. Сохраняются только строки поступлений, на этом устройстве.</div></label>' +
+      '<div id="uploadList" class="uploads">' + ups + '</div>' + fl + pt + ot + audit;
+    bindTaxes();
+  }
+  function opRow(o) {
+    var c = effCls(o), ov = S.over[o.id], w = why(o);
+    return '<tr><td>' + fdate(o.date) + '</td><td>' + esc(o.bank === 'bcc' ? 'ЦентрКредит' : o.bank === 'halyk' ? 'Halyk' : 'Kaspi') + '</td><td>' + esc(o.cp || '—') + '<div class="small">' + esc(o.purpose.slice(0, 140)) + '</div></td><td><strong>' + fmt(o.credit) + '</strong></td><td><span class="pill c-' + c + '">' + esc(CL[c]) + '</span>' +
+      (w ? '<div class="small warn-t">' + esc(w) + '</div>' : '') + (ov ? '<div class="small">изменено вами' + (ov.reason ? ': ' + esc(ov.reason) : '') + '</div>' : '') +
+      '</td><td><button class="btn" data-act="edit" data-id="' + esc(o.id) + '">' + (w ? 'Проверить' : 'Изменить') + '</button></td></tr>';
+  }
+  function bindTaxes() {
+    var inp = $('pdfInput'), dz = $('dropzone');
+    inp.onchange = function () { handleFiles(inp.files); inp.value = ''; };
+    ['dragenter', 'dragover'].forEach(function (ev) { dz.addEventListener(ev, function (e) { e.preventDefault(); dz.classList.add('over'); }); });
+    ['dragleave', 'drop'].forEach(function (ev) { dz.addEventListener(ev, function (e) { e.preventDefault(); dz.classList.remove('over'); }); });
+    dz.addEventListener('drop', function (e) { if (e.dataTransfer && e.dataTransfer.files) handleFiles(e.dataTransfer.files); });
+    var sp = $('opPeriod'); if (sp) sp.onchange = function () { UI.opPeriod = this.value; UI.limit = 100; renderTaxes(); };
+    var se = $('opSearch'); if (se) se.oninput = function () { UI.q = this.value; UI.limit = 100; var pos = this.selectionStart; renderTaxes(); var e = $('opSearch'); e.focus(); try { e.setSelectionRange(pos, pos); } catch (x) {} };
+    [].forEach.call(document.querySelectorAll('input.rate'), function (i) {
+      i.onchange = function () { var k = i.getAttribute('data-k'); if (i.value === '') delete S.settings.rates[k]; else S.settings.rates[k] = Number(i.value); save(); renderTaxes(); };
+    });
+  }
+
+  // ---------- PDF loading ----------
+  var PDFJS_VER = '4.10.38';
+  // The "legacy" build works in older browsers and phones; the modern one is a fallback.
+  var SOURCES = [
+    'https://cdn.jsdelivr.net/npm/pdfjs-dist@' + PDFJS_VER + '/legacy/build/',
+    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/' + PDFJS_VER + '/',
+    'https://cdn.jsdelivr.net/npm/pdfjs-dist@' + PDFJS_VER + '/build/'
+  ];
+  var pdfjsP = null;
+  function polyfills() {
+    // defined as non-enumerable so the PDF engine's own sanity checks stay happy
+    function def(obj, name, fn) { if (!obj[name]) Object.defineProperty(obj, name, { value: fn, writable: true, configurable: true, enumerable: false }); }
+    def(Promise, 'withResolvers', function () { var res, rej, promise = new Promise(function (a, b) { res = a; rej = b; }); return { promise: promise, resolve: res, reject: rej }; });
+    def(Array.prototype, 'at', function (n) { n = Math.trunc(n) || 0; if (n < 0) n += this.length; return this[n]; });
+    def(Object, 'hasOwn', function (o, k) { return Object.prototype.hasOwnProperty.call(o, k); });
+    if (typeof structuredClone !== 'function') def(window, 'structuredClone', function (v) { return JSON.parse(JSON.stringify(v)); });
+  }
+  function getPdfjs() {
+    if (!pdfjsP) {
+      pdfjsP = (async function () {
+        polyfills();
+        var errs = [];
+        for (var i = 0; i < SOURCES.length; i++) {
+          try {
+            var lib = await import(SOURCES[i] + 'pdf.min.mjs');
+            // run the PDF engine on the page itself: no separate worker file, which phones and some viewers block
+            globalThis.pdfjsWorker = await import(SOURCES[i] + 'pdf.worker.min.mjs');
+            lib.GlobalWorkerOptions.workerSrc = SOURCES[i] + 'pdf.worker.min.mjs';
+            return lib;
+          } catch (e) { errs.push(SOURCES[i].split('/')[2] + ': ' + String(e && e.message || e)); }
+        }
+        throw new Error(errs.join(' | '));
+      })();
+      pdfjsP.catch(function () { pdfjsP = null; });
+    }
+    return pdfjsP;
+  }
+  var tick = function () { return new Promise(function (r) { setTimeout(r, 0); }); };
+
+  async function readPages(file, lib, onPage) {
+    var data = new Uint8Array(await file.arrayBuffer());
+    var doc = await lib.getDocument({ data: data, isEvalSupported: false, verbosity: 0 }).promise;
+    var pages = [];
+    for (var n = 1; n <= doc.numPages; n++) {
+      var page = await doc.getPage(n), vp = page.getViewport({ scale: 1 }), tc = await page.getTextContent();
+      pages.push(tc.items.filter(function (i) { return i.str && i.str.trim(); }).map(function (i) {
+        var t = lib.Util.transform(vp.transform, i.transform);
+        return { s: i.str, x: t[4], y: t[5], w: i.width };
+      }));
+      if (n % 5 === 0 || n === doc.numPages) { onPage(n, doc.numPages); await tick(); }
+    }
+    return pages;
+  }
+
+  async function handleFiles(fileList) {
+    var files = [].slice.call(fileList).filter(function (f) { return /\.pdf$/i.test(f.name) || f.type === 'application/pdf'; });
+    if (!files.length) { UI.uploads = [{ name: 'Файл', state: 'err', text: 'Нужны файлы в формате PDF.' }]; renderTaxes(); return; }
+    UI.uploads = files.map(function (f) { return { name: f.name, state: 'work', text: 'подготовка…' }; });
+    renderTaxes();
+    var lib;
+    try { lib = await getPdfjs(); } catch (e) {
+      UI.uploads = files.map(function (f) { return { name: f.name, state: 'err', text: 'не удалось загрузить модуль чтения PDF. Проверьте интернет и попробуйте снова. Подробности: ' + String(e && e.message || e).slice(0, 300) }; });
+      renderTaxes(); return;
+    }
+    for (var i = 0; i < files.length; i++) {
+      var u = UI.uploads[i], f = files[i];
+      try {
+        var pages = await readPages(f, lib, function (n, total) { u.text = 'читаю страницы ' + n + ' из ' + total; var l = $('uploadList'); if (l) l.innerHTML = upHtml(); });
+        var r = P.parseStatement(pages);
+        if (r.error) { u.state = 'err'; u.text = r.error; continue; }
+        var incoming = r.ops.filter(function (o) { return o.credit > 0; });
+        var sig = r.bank + '|' + r.from + '|' + r.to + '|' + incoming.length + '|' + r.check.sumCredit;
+        if (S.files.some(function (x) { return x.sig === sig; })) { u.state = 'warn'; u.text = 'эта выписка уже загружена.'; continue; }
+        var have = {}; S.ops.forEach(function (o) { have[o.id] = 1; });
+        var added = 0, dup = 0, fid = 'f' + Date.now() + i;
+        incoming.forEach(function (o) {
+          var id = P.opId(o); if (have[id]) { dup++; return; } have[id] = 1;
+          var cls = P.classify(o, r.ownId);
+          S.ops.push({ id: id, bank: o.bank, date: o.date, credit: o.credit, cp: (o.cp || '').slice(0, 90), purpose: (o.purpose || '').slice(0, 220), auto: cls, why: P.reviewReason(o, cls), fid: fid });
+          added++;
+        });
+        var note = '';
+        if (r.check.status === 'mismatch') note = 'в выписке: ' + fmt(r.check.expected.credit) + ' поступлений, разобрано: ' + fmt(r.check.sumCredit);
+        S.files.push({ id: fid, sig: sig, name: f.name, bank: r.bank, bankLabel: r.bankLabel, from: r.from, to: r.to, nIn: incoming.length, sumIn: incoming.reduce(function (a, o) { return a + o.credit; }, 0), status: r.check.status, note: note });
+        S.sel = ''; save();
+        u.state = r.check.status === 'mismatch' ? 'warn' : 'ok';
+        u.text = r.bankLabel + ': найдено ' + added + ' ' + plural(added, 'поступление', 'поступления', 'поступлений') + (dup ? ', повторов пропущено: ' + dup : '') + (r.check.status === 'ok' ? ', итоги совпали с банком' : r.check.status === 'mismatch' ? ', но итоги не совпали с банком, проверьте' : '');
+      } catch (e) {
+        u.state = 'err';
+        u.text = /password/i.test(String(e && (e.name + e.message))) ? 'файл защищён паролем.' : 'не удалось прочитать файл. Подробности: ' + String((e && e.name) || '') + ' ' + String(e && e.message || e).slice(0, 300);
+      }
+    }
+    renderTaxes();
+  }
+  function upHtml() { return UI.uploads.map(function (u) { return '<div class="up-' + u.state + '">' + (u.state === 'work' ? '⏳ ' : u.state === 'ok' ? '✓ ' : u.state === 'warn' ? '⚠ ' : '✕ ') + esc(u.name) + ': ' + esc(u.text) + '</div>'; }).join(''); }
+
+  // ---------- edit modal ----------
+  function openEdit(id) {
+    var o = S.ops.filter(function (x) { return x.id === id; })[0]; if (!o) return;
+    UI.editId = id;
+    var c = effCls(o), w = why(o);
+    $('opBody').innerHTML = '<div class="demo-row"><span>Дата</span><strong>' + fdate(o.date) + '</strong></div><div class="demo-row"><span>Сумма</span><strong>' + fmt(o.credit) + '</strong></div><div class="demo-row"><span>От кого</span><strong>' + esc(o.cp || '—') + '</strong></div>' +
+      '<div class="small" style="margin:10px 0">' + esc(o.purpose) + '</div>' +
+      '<div class="small">Программа определила: <strong>' + esc(CL[o.auto]) + '</strong>' + (w ? '<br>' + esc(w) : '') + '</div>' +
+      '<div class="field"><label for="opCls">Как учесть</label><select id="opCls">' + Object.keys(CL).map(function (k) { return '<option value="' + k + '"' + (k === c ? ' selected' : '') + '>' + esc(CL[k]) + '</option>'; }).join('') + '</select></div>' +
+      '<div class="hint" id="opHint">' + hintFor(c) + '</div>' +
+      '<div class="field"><label for="opReason">Причина (обязательна, если вы меняете решение программы)</label><input id="opReason" value="' + esc((S.over[id] || {}).reason || '') + '" placeholder="Например: возврат ошибочного платежа, договор №…"></div><div id="opErr" class="risk-high"></div>' +
+      '<div class="small">Решение попадёт в журнал. Документ не меняет класс сам: ответственность за него остаётся на вас.</div>';
+    $('opCls').onchange = function () { $('opHint').innerHTML = hintFor(this.value); };
+    $('opModal').style.display = 'flex';
+  }
+  function saveEdit() {
+    var o = S.ops.filter(function (x) { return x.id === UI.editId; })[0]; if (!o) return;
+    var cls = $('opCls').value, reason = $('opReason').value.trim(), prev = effCls(o);
+    if (cls !== o.auto && !reason) { $('opErr').textContent = 'Укажите причину, почему вы меняете решение программы.'; return; }
+    S.over[o.id] = { cls: cls, reason: reason, ts: new Date().toISOString() };
+    S.audit.push({ ts: new Date().toLocaleString('ru-RU'), id: o.id, amount: o.credit, cp: o.cp, from: prev, to: cls, reason: reason });
+    save(); closeEdit(); renderCurrent();
+  }
+  function resetEdit() {
+    var o = S.ops.filter(function (x) { return x.id === UI.editId; })[0]; if (!o) return;
+    if (S.over[o.id]) { S.audit.push({ ts: new Date().toLocaleString('ru-RU'), id: o.id, amount: o.credit, cp: o.cp, from: effCls(o), to: o.auto, reason: 'возврат к автоопределению' }); delete S.over[o.id]; save(); }
+    closeEdit(); renderCurrent();
+  }
+  function closeEdit() { $('opModal').style.display = 'none'; UI.editId = null; }
+
+  // ---------- export ----------
+  function copyBlock() {
+    var h = '<div class="small" style="margin:-4px 0 10px">Если скачивание не срабатывает (во встроенном просмотре оно часто заблокировано), нажмите «Копировать для Excel» и вставьте таблицу в Excel, Numbers или Google Таблицы.</div>';
+    if (UI.copyMsg) h += '<div class="small ' + (UI.copyText ? 'warn-t' : 'good') + '" style="margin:0 0 8px">' + esc(UI.copyMsg) + '</div>';
+    if (UI.copyText) h += '<textarea id="copyArea" class="copybox" readonly rows="6">' + esc(UI.copyText) + '</textarea>';
+    return h;
+  }
+  function copyTable() {
+    var clean = function (v) { return String(v == null ? '' : v).replace(/[\t\r\n]+/g, ' ').trim(); };
+    var lines = [['Дата', 'Период', 'Банк', 'Контрагент', 'Назначение платежа', 'Сумма, ₸', 'Как учтено', 'Комментарий'].join('\t')];
+    sortedOps().forEach(function (o) {
+      var ov = S.over[o.id];
+      lines.push([fdate(o.date), plabel(pkey(o.date)), o.bank === 'bcc' ? 'ЦентрКредит' : o.bank === 'halyk' ? 'Halyk' : 'Kaspi', clean(o.cp), clean(o.purpose), String(o.credit).replace('.', ','), CL[effCls(o)], clean(ov ? ov.reason : why(o))].join('\t'));
+    });
+    var text = lines.join('\n');
+    var fallback = function () { UI.copyText = text; UI.copyMsg = 'Не удалось скопировать автоматически. Текст ниже выделен: нажмите «Копировать» в меню телефона и вставьте в таблицу.'; renderTaxes(); var ta = $('copyArea'); if (ta) { ta.focus(); ta.select(); try { ta.setSelectionRange(0, text.length); } catch (e) {} } };
+    try {
+      navigator.clipboard.writeText(text).then(function () { UI.copyText = ''; UI.copyMsg = 'Скопировано: ' + (lines.length - 1) + ' строк. Откройте таблицу и вставьте.'; renderTaxes(); }, fallback);
+    } catch (e) { fallback(); }
+  }
+  function anchorSave(blob, name) {
+    var url = URL.createObjectURL(blob), a = document.createElement('a');
+    a.href = url; a.download = name; a.style.display = 'none';
+    document.body.appendChild(a); a.click();
+    setTimeout(function () { a.remove(); }, 1500);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 180000);   // phones need the link alive until the download finishes
+  }
+  // In the hosted viewer the page may not download by itself: it asks the viewer through the `downloads` capability.
+  async function saveBlob(blob, name, failMsg) {
+    var d = null;
+    try { if (window.claude && typeof window.claude.use === 'function') d = await window.claude.use('downloads'); } catch (e) { d = null; }
+    if (!d) { anchorSave(blob, name); return; }
+    try { await d.save({ filename: name, data: blob }); }
+    catch (e) {
+      if (e && e.code === 'declined') return;
+      if (e && (e.code === 'rejected_extension' || e.code === 'too_large' || e.code === 'bad_request' || e.code === 'extension_not_enabled')) { toast(failMsg || 'Не удалось сохранить файл здесь. Используйте «Копировать для Excel».'); return; }
+      anchorSave(blob, name);
+    }
+  }
+  function sortedOps() { return S.ops.slice().sort(function (a, b) { return a.date < b.date ? -1 : a.date > b.date ? 1 : 0; }); }
+  function exportCsv() {
+    var head = 'Дата;Банк;Контрагент;Назначение;Сумма;Как учтено;Комментарий\r\n';
+    var q = function (s) { return '"' + String(s == null ? '' : s).replace(/"/g, '""') + '"'; };
+    var rows = sortedOps().map(function (o) {
+      var ov = S.over[o.id];
+      return [fdate(o.date), o.bank, q(o.cp), q(o.purpose), String(o.credit).replace('.', ','), CL[effCls(o)], q(ov ? ov.reason : why(o))].join(';');
+    });
+    saveBlob(new Blob(['﻿' + head + rows.join('\r\n') + '\r\n'], { type: 'text/csv;charset=utf-8' }), 'salyqflow_postupleniya.csv');
+  }
+
+  // minimal .xlsx writer (zip without compression) so the file opens in Excel, Google Sheets and Numbers
+  var CRC = (function () { var t = [], c, n, k; for (n = 0; n < 256; n++) { c = n; for (k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+  function crc32(u8) { var c = 0xFFFFFFFF; for (var i = 0; i < u8.length; i++) c = CRC[(c ^ u8[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+  function zipStore(files) {
+    var enc = new TextEncoder(), chunks = [], central = [], off = 0;
+    function u16(v) { return [v & 255, (v >>> 8) & 255]; }
+    function u32(v) { return [v & 255, (v >>> 8) & 255, (v >>> 16) & 255, (v >>> 24) & 255]; }
+    files.forEach(function (f) {
+      var name = enc.encode(f.name), data = enc.encode(f.text), crc = crc32(data);
+      var lh = [].concat(u32(0x04034b50), u16(20), u16(0x0800), u16(0), u16(0), u16(0x21), u32(crc), u32(data.length), u32(data.length), u16(name.length), u16(0));
+      chunks.push(new Uint8Array(lh), name, data);
+      central.push({ name: name, crc: crc, size: data.length, off: off });
+      off += lh.length + name.length + data.length;
+    });
+    var cdStart = off;
+    central.forEach(function (c) {
+      var h = [].concat(u32(0x02014b50), u16(20), u16(20), u16(0x0800), u16(0), u16(0), u16(0x21), u32(c.crc), u32(c.size), u32(c.size), u16(c.name.length), u16(0), u16(0), u16(0), u16(0), u32(0), u32(c.off));
+      chunks.push(new Uint8Array(h), c.name); off += h.length + c.name.length;
+    });
+    var end = [].concat(u32(0x06054b50), u16(0), u16(0), u16(central.length), u16(central.length), u32(off - cdStart), u32(cdStart), u16(0));
+    chunks.push(new Uint8Array(end));
+    return new Blob(chunks, { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  }
+  function xesc(s) { return String(s == null ? '' : s).replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g, '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function colName(i) { return String.fromCharCode(65 + i); }
+  // cell: string | number | {d:'YYYY-MM-DD'} | {h:'bold text'} | {i:integer with thousands} | {g:plain number}
+  function sheetXml(rows, widths, freeze) {
+    var x = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">' +
+      (freeze === false ? '' : '<sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>') + '<cols>' +
+      widths.map(function (w, i) { return '<col min="' + (i + 1) + '" max="' + (i + 1) + '" width="' + w + '" customWidth="1"/>'; }).join('') + '</cols><sheetData>';
+    rows.forEach(function (r, ri) {
+      x += '<row r="' + (ri + 1) + '">';
+      r.forEach(function (c, ci) {
+        var ref = colName(ci) + (ri + 1);
+        if (c === '' || c == null) return;
+        if (c && c.h !== undefined) x += '<c r="' + ref + '" s="1" t="inlineStr"><is><t xml:space="preserve">' + xesc(c.h) + '</t></is></c>';
+        else if (c && c.d) { var serial = Math.round((Date.UTC(+c.d.slice(0, 4), +c.d.slice(5, 7) - 1, +c.d.slice(8, 10)) - Date.UTC(1899, 11, 30)) / 86400000); x += '<c r="' + ref + '" s="2"><v>' + serial + '</v></c>'; }
+        else if (c && c.i !== undefined) x += '<c r="' + ref + '" s="4"><v>' + c.i + '</v></c>';
+        else if (c && c.g !== undefined) x += '<c r="' + ref + '"><v>' + c.g + '</v></c>';
+        else if (typeof c === 'number') x += '<c r="' + ref + '" s="3"><v>' + c + '</v></c>';
+        else x += '<c r="' + ref + '" t="inlineStr"><is><t xml:space="preserve">' + xesc(c) + '</t></is></c>';
+      });
+      x += '</row>';
+    });
+    return x + '</sheetData></worksheet>';
+  }
+  function exportBook(sheets, filename) {
+    var NS = 'xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"', RNS = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships', H = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+    var files = [
+      { name: '[Content_Types].xml', text: H + '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>' +
+        sheets.map(function (s, i) { return '<Override PartName="/xl/worksheets/sheet' + (i + 1) + '.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>'; }).join('') + '<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>' },
+      { name: '_rels/.rels', text: H + '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="' + RNS + '/officeDocument" Target="xl/workbook.xml"/></Relationships>' },
+      { name: 'xl/workbook.xml', text: H + '<workbook ' + NS + ' xmlns:r="' + RNS + '"><sheets>' + sheets.map(function (s, i) { return '<sheet name="' + xesc(s.name) + '" sheetId="' + (i + 1) + '" r:id="rId' + (i + 1) + '"/>'; }).join('') + '</sheets></workbook>' },
+      { name: 'xl/_rels/workbook.xml.rels', text: H + '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' + sheets.map(function (s, i) { return '<Relationship Id="rId' + (i + 1) + '" Type="' + RNS + '/worksheet" Target="worksheets/sheet' + (i + 1) + '.xml"/>'; }).join('') + '<Relationship Id="rId' + (sheets.length + 1) + '" Type="' + RNS + '/styles" Target="styles.xml"/></Relationships>' },
+      { name: 'xl/styles.xml', text: H + '<styleSheet ' + NS + '><numFmts count="1"><numFmt numFmtId="164" formatCode="dd\\.mm\\.yyyy"/></numFmts><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="5"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="164" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="4" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="3" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>' }
+    ];
+    sheets.forEach(function (s, i) { files.push({ name: 'xl/worksheets/sheet' + (i + 1) + '.xml', text: sheetXml(s.rows, s.widths, s.freeze) }); });
+    saveBlob(zipStore(files), filename);
+  }
+  function bankName(b) { return b === 'bcc' ? 'ЦентрКредит' : b === 'halyk' ? 'Halyk' : 'Kaspi'; }
+  function opsSheet() {
+    var rows = [[{ h: 'Дата' }, { h: 'Период' }, { h: 'Банк' }, { h: 'Контрагент' }, { h: 'Назначение платежа' }, { h: 'Сумма, ₸' }, { h: 'Как учтено' }, { h: 'Комментарий' }]];
+    sortedOps().forEach(function (o) { var ov = S.over[o.id]; rows.push([{ d: o.date }, plabel(pkey(o.date)), bankName(o.bank), o.cp, o.purpose, o.credit, CL[effCls(o)], ov ? ov.reason : why(o)]); });
+    return { name: 'Поступления', rows: rows, widths: [12, 20, 13, 38, 70, 16, 22, 40] };
+  }
+  function perSheet() {
+    var st = stats(), rows = [[{ h: 'Период' }, { h: 'Доход, ₸' }, { h: 'Ставка, %' }, { h: 'Налог, ₸' }, { h: 'Не доход, ₸' }, { h: 'На проверке, шт.' }]];
+    Object.keys(st).sort().forEach(function (k) {
+      var p = st[k], ex = 0; Object.keys(p.ex).forEach(function (c) { ex += p.ex[c]; });
+      rows.push([plabel(k), Math.round(p.income * 100) / 100, rateFor(k), taxOf(p.income, k), Math.round(ex * 100) / 100, p.review]);
+    });
+    return { name: 'Налог по периодам', rows: rows, widths: [22, 16, 11, 16, 16, 18] };
+  }
+  function auditSheet() {
+    var rows = [[{ h: 'Время' }, { h: 'Сумма, ₸' }, { h: 'Контрагент' }, { h: 'Было' }, { h: 'Стало' }, { h: 'Причина' }]];
+    S.audit.forEach(function (a) { rows.push([a.ts, a.amount, a.cp, CL[a.from] || a.from, CL[a.to] || a.to, a.reason || 'подтверждено']); });
+    if (rows.length === 1) rows.push(['Решений пока нет']);
+    return { name: 'Журнал решений', rows: rows, widths: [22, 16, 38, 24, 24, 50] };
+  }
+  function summarySheet() {
+    var s = S.settings, st = stats(), keys = Object.keys(st).sort(), r = [];
+    r.push([{ h: 'Сводка для бухгалтера: SALYQFLOW' }]);
+    r.push(['Сформирована', fdate(dstr(new Date()))]);
+    r.push(['ИП', s.name], ['ИИН', s.iin], ['Дата рождения', fdate(s.birth)], ['Телефон', s.phone], ['Регион', regionLine()], ['Ставка по умолчанию, %', { g: s.rate }]);
+    r.push([]);
+    r.push([{ h: 'Период' }, { h: 'Доход, ₸' }, { h: 'Ставка, %' }, { h: 'Налог, ₸' }, { h: 'Срок уплаты' }, { h: 'Операций-доходов' }, { h: 'На проверке, шт.' }, { h: 'На проверке, ₸' }]);
+    keys.forEach(function (k) { var p = st[k]; r.push([plabel(k), { i: Math.round(p.income) }, { g: rateFor(k) }, { i: taxOf(p.income, k) }, { d: dstr(dueOf(k)) }, { g: p.n }, { g: p.review }, { i: Math.round(p.reviewSum) }]); });
+    r.push([]);
+    r.push([{ h: 'Не считается доходом, ₸' }, { h: 'Кредит / заём' }, { h: 'Свои средства' }, { h: 'Пополнение наличными' }, { h: 'Возврат / ошибка' }]);
+    keys.forEach(function (k) { var e = st[k].ex; r.push([plabel(k), { i: Math.round(e.loan || 0) }, { i: Math.round(e.own || 0) }, { i: Math.round(e.cash || 0) }, { i: Math.round(e.refund || 0) }]); });
+    r.push([]);
+    r.push([{ h: 'Банк' }, { h: 'Файл' }, { h: 'Период операций' }, { h: 'Поступлений' }, { h: 'Сумма, ₸' }, { h: 'Сверка с банком' }]);
+    S.files.forEach(function (f) { r.push([f.bankLabel, f.name, fdate(f.from) + ' – ' + fdate(f.to), { g: f.nIn }, { i: Math.round(f.sumIn) }, f.status === 'ok' ? 'итоги совпали' : f.status === 'mismatch' ? 'НЕ СОВПАЛО: ' + (f.note || '') : 'итогов в файле нет']); });
+    r.push([]);
+    r.push(['Расчёт справочный: он сделан автоматически по загруженным банковским выпискам и не заменяет данные налогового кабинета. Решения по спорным поступлениям см. на листе «Журнал решений».']);
+    return { name: 'Сводка', rows: r, widths: [30, 24, 24, 24, 24, 24, 18, 18], freeze: false };
+  }
+  function exportXlsx() { exportBook([opsSheet(), perSheet()], 'salyqflow_postupleniya.xlsx'); }
+  function exportSummary() { exportBook([summarySheet(), opsSheet(), auditSheet()], 'salyqflow_svodka_dlya_buhgaltera.xlsx'); }
+  function summaryText() {
+    var s = S.settings, st = stats(), L = ['Сводка SALYQFLOW для бухгалтера', s.name + ', ИИН ' + s.iin, regionLine(), ''];
+    Object.keys(st).sort().forEach(function (k) {
+      var p = st[k], ex = 0; Object.keys(p.ex).forEach(function (c) { ex += p.ex[c]; });
+      L.push(plabel(k) + ' (операции с ' + fdate(p.from) + ' по ' + fdate(p.to) + ')', '  Доход по выпискам: ' + fmt(p.income) + ' (' + p.n + ' шт.)', '  Ставка ' + rateFor(k) + '%, расчётный налог: ' + fmt(taxOf(p.income, k)) + ', срок до ' + fdD(dueOf(k)),
+        '  Не считается доходом: ' + fmt(ex) + (p.review ? '' : ''), p.review ? '  На проверке: ' + p.review + ' шт. на ' + fmt(p.reviewSum) : '  Спорных операций нет', '');
+    });
+    L.push('Выписки: ' + S.files.map(function (f) { return f.bankLabel + ' ' + fdate(f.from) + '–' + fdate(f.to) + (f.status === 'ok' ? ' (итоги сошлись)' : f.status === 'mismatch' ? ' (НЕ СОШЛОСЬ)' : ''); }).join('; '), 'Расчёт справочный, сделан по банковским выпискам.');
+    return L.join('\n');
+  }
+
+  // ---------- events ----------
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest('[data-act]'); if (!t) return;
+    var act = t.getAttribute('data-act');
+    if (act === 'goto') { if (t.getAttribute('data-filter')) UI.filter = t.getAttribute('data-filter'); showPage(t.getAttribute('data-page')); }
+    else if (act === 'filter') { UI.filter = t.getAttribute('data-f'); UI.limit = 100; renderTaxes(); }
+    else if (act === 'more') { e.preventDefault(); UI.limit += 200; renderTaxes(); }
+    else if (act === 'edit') openEdit(t.getAttribute('data-id'));
+    else if (act === 'csv') exportCsv();
+    else if (act === 'copy') copyTable();
+    else if (act === 'xlsx') exportXlsx();
+    else if (act === 'rmFile') {
+      var id = t.getAttribute('data-id');
+      S.ops = S.ops.filter(function (o) { return o.fid !== id; }); S.files = S.files.filter(function (f) { return f.id !== id; }); S.sel = ''; save(); renderTaxes();
+    }
+    else if (act === 'paid') { var m = t.getAttribute('data-m'); if (S.paid[m]) delete S.paid[m]; else S.paid[m] = 1; save(); renderSocial(); }
+    else if (act === 'saveProfile') {
+      var s = S.settings, ph = normPhone($('pfPhone').value), r = parseFloat($('pfRate').value), z = parseFloat($('pfMzp').value);
+      if (!$('pfName').value.trim()) { setMsg('pfSaved', 'Укажите наименование ИП'); return; }
+      if (!ph) { setMsg('pfSaved', 'Телефон: после +7 введите ещё 10 цифр: код оператора и номер'); return; }
+      if (!$('pfRegion').value || !$('pfDistrict').value.trim()) { setMsg('pfSaved', 'Укажите область и район'); return; }
+      if (isNaN(r) || r < 0 || r > 20) { setMsg('pfSaved', 'Ставка должна быть от 0 до 20'); return; }
+      s.name = $('pfName').value.trim(); s.phone = ph; s.region = $('pfRegion').value; s.district = $('pfDistrict').value.trim(); s.rate = r;
+      if (!isNaN(z) && z > 0) s.mzp = z;
+      var ac = accounts(); if (ac[CUR]) { ac[CUR].phone = ph; saveAccounts(ac); }
+      UI.social = null; save(); $('hdrName').textContent = s.name; setMsg('pfSaved', 'Сохранено', true);
+    }
+    else if (act === 'clearData') {
+      if (!UI.confirmClear) { UI.confirmClear = true; renderProfile(); return; }
+      S.files = []; S.ops = []; S.over = {}; S.audit = []; S.sel = ''; UI.confirmClear = false; UI.uploads = []; save(); renderProfile();
+    }
+    else if (act === 'deleteAcct') {
+      if (!UI.confirmDel) { UI.confirmDel = true; renderProfile(); return; }
+      var ac2 = accounts(); delete ac2[CUR]; saveAccounts(ac2); lsDel(USR + CUR); var gone = CUR; logout(); toast('Кабинет ' + gone.slice(0, 4) + '… удалён с этого устройства');
+    }
+    else if (act === 'doRegister') doRegister();
+    else if (act === 'doLogin') doLogin();
+    else if (act === 'doReset') doReset();
+    else if (act === 'logout') logout();
+    else if (act === 'changePw') changePw();
+    else if (act === 'closeInfo') $('infoModal').style.display = 'none';
+    else if (act === 'copyPay') { var kk = t.getAttribute('data-k'), pp = stats()[kk]; if (pp) copyText(payText(kk, taxOf(pp.income, kk)), 'Данные для оплаты скопированы'); }
+    else if (act === 'taxPaid') { var k2 = t.getAttribute('data-k'); if (S.paid['tax-' + k2]) delete S.paid['tax-' + k2]; else S.paid['tax-' + k2] = 1; save(); renderDashboard(); }
+    else if (act === 'summary') exportSummary();
+    else if (act === 'summaryText') copyText(summaryText(), 'Сводка скопирована');
+    else if (act === 'ics') saveBlob(new Blob([buildIcs(deadlines().slice(0, 10))], { type: 'text/calendar;charset=utf-8' }), 'salyqflow_sroki.ics', 'В этом просмотре файлы календаря не сохраняются. Откройте приложение в браузере или используйте кнопку «В Google Календарь» у нужного срока.');
+    else if (act === 'toggleNav') document.body.classList.toggle('nav-open');
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter' || !e.target || e.target.tagName !== 'INPUT') return;
+    var box = e.target.closest ? e.target.closest('.auth-box') : null, b = box && box.querySelector('button.primary');
+    if (b && !b.disabled) { e.preventDefault(); b.click(); }
+  });
+  document.addEventListener('DOMContentLoaded', function () {
+    [].forEach.call(document.querySelectorAll('.nav'), function (n) { n.addEventListener('click', function () { showPage(n.getAttribute('data-page')); }); });
+    $('opSave').onclick = saveEdit; $('opReset').onclick = resetEdit; $('opCancel').onclick = closeEdit;
+    fillRegions($('regRegion'), '');
+    document.addEventListener('focusin', function (e) { var el = e.target; if (el && el.type === 'tel' && !phoneDigits(el.value)) el.value = '+7 ('; });
+    document.addEventListener('paste', function (e) {
+      var el = e.target; if (!el || el.type !== 'tel') return;
+      var cd = e.clipboardData || window.clipboardData; if (!cd) return;
+      e.preventDefault(); el.value = phoneView(cd.getData('text')); el.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    document.addEventListener('input', function (e) {
+      var el = e.target; if (!el || !el.id) return;
+      if (el.type === 'tel') el.value = phoneView(el.value);
+      var pairs = { regPw: 'regPwHint', rsPw: 'rsPwHint', pfNew: 'pfNewHint' };
+      if (pairs[el.id]) pwHintUpdate(el.id, pairs[el.id]);
+    });
+    $('regIin').addEventListener('input', onIinInput);
+    var ses = lsGet(SES_KEY);
+    if (ses && accounts()[ses]) { CUR = ses; S = loadFor(ses); window.enterApp(); }
+  });
+})();
+
+</script>
+</body>
+</html>
